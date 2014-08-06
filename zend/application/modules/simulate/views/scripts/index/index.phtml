@@ -1,0 +1,144 @@
+<script>
+
+$(document).ready(function() {
+
+    $("#my-designs").dataTable( {
+        "aLengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+        "bStateSave": true,
+        "iDisplayLength": 10, 
+        "bJQueryUI": true,
+        "bProcessing": false,
+        "bAutoWidth": false,
+        "sPaginationType": "full_numbers",
+        "oLanguage": {
+            "sSearch": "Filter records:",
+            "sZeroRecords": "No records to display",
+            "oPaginate" : { "sPrevious" : "Prev" }
+        },
+        "aoColumns": [
+               { "sTitle" : "Name", "sWidth": "200px"},
+               { "sTitle" : "Grammar", "sWidth": "200px"},
+               { "sTitle" : "Library", "sWidth": "200px", "sClass" : "center" },
+               { "sTitle" : "Modified", "sWidth": "80px", "sClass" : "center" },
+               { "sTitle" : "Status", "sWidth": "40px", "bSortable": false},
+               { "sTitle" : "Design", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "Download", "sWidth": "110px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "Simulate", "sWidth": "50px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "", "sWidth": "18px", "bSortable": false, "sClass" : "center" }
+                ]
+    });
+
+    $("#public-designs").dataTable( {
+        "aLengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+        "bStateSave": true,
+        "iDisplayLength": 10, 
+        "bJQueryUI": true,
+        "bProcessing": false,
+        "bAutoWidth": false,
+        "sPaginationType": "full_numbers",
+        "oLanguage": {
+            "sSearch": "Filter records:",
+            "sZeroRecords": "No records to display",
+            "oPaginate" : { "sPrevious" : "Prev" }
+        },
+        "aoColumns": [
+			{ "sTitle" : "Name", "sWidth": "200px"},
+			{ "sTitle" : "Grammar", "sWidth": "200px"},
+			{ "sTitle" : "Library", "sWidth": "200px", "sClass" : "center" },
+			{ "sTitle" : "Modified", "sWidth": "80px", "sClass" : "center" },
+			{ "sTitle" : "Status", "sWidth": "40px", "bSortable": false},
+			{ "sTitle" : "Design", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+			{ "sTitle" : "Download", "sWidth": "110px", "bSortable": false, "sClass" : "center" },
+			{ "sTitle" : "Simulate", "sWidth": "50px", "bSortable": false, "sClass" : "center" },
+			{ "sTitle" : "", "sWidth": "18px", "bSortable": false, "sClass" : "center" }
+                ]
+    });
+
+    $('#btn_start_new').button();
+    $(".ui-icon-comment").tipTip({delay: 0});
+});
+
+
+
+
+</script>
+
+<div id="page-content">
+    <div style="height: 30px;">
+        <h1 style="float: left; padding-right: 10px;">Simulate Design</h1>
+        <div style="float: right">
+            <a id="btn_start_new" href="<?php echo $this->url(array('module'=>'design', 'action'=>'index'), null, true); ?>">Start New Design</a>
+        </div>
+    </div>
+    <p>GenoCAD now supports the ability to simulate designs using the <a href="http://www.copasi.org/" target="_top">COPASI</a> simulation engine.  In order to be simulated, however, the design must be associated with an attribute grammar.  Some public designs are provided for demonstration purposes.</p>
+    <?php if (Genocad_Application::isLoggedIn()) { ?>
+    <h2>My Designs Available for Simulation</h2><br/>
+    <form id="form-my-designs"  style="margin-bottom: 30px;">
+        <table cellspacing="1" cellpadding="5" id="my-designs">
+            <tbody>
+            <?php  foreach ($this->designs as $design) {
+
+                $status = $design->getValidationStatus();
+
+                printf('<tr id="%s">', $design->design_id);
+                printf('<td>%s</td>', $design->name);
+                printf('<td>%s</td>', $design->gramname);
+				printf('<td>%s</td>', $design->libname); 
+				printf('<td align="center">%s</td>', date("m/d/Y", strtotime($design->last_modification)));
+                printf('<td align="center"><a onclick="revalidateDesign(%s);" href="#"><img alt="%s" title="%s" src="/images/%s"></a></td>', $design->design_id, $status['title'], $status['title'], $status['image']);
+                printf('<td align="center"><a href="%s"><img src="/images/other/design_icon.png" /></a></td>', $this->url(array('module'=>'design', 'controller'=>'index', 'action'=>'index', 'design_id'=>$design->design_id)));
+                printf('<td align="center" valign="middle"><a href="%s"><img src="/images/other/sbml-logo-32.png"/></a></td>', $this->url(array('module'=>'simulate', 'action'=>'download', 'id'=>$design->design_id, 'type'=>'sbml'), null, true));
+                printf('<td align="center"><a href="%s"><img src="/images/other/simulate.png" height="32" /></a></td>', $this->url(array('action'=>'simulate', 'id'=>$design->design_id)));
+                if ($design->description != "") {
+                    	printf('<td><span class="ui-icon ui-icon-comment" title="%s"></span></td>', $design->description);
+                } else {
+                    	printf('<td></td>');
+                }		
+                echo '</tr>';
+            }
+            ?>
+              </tbody>
+        </table>
+    </form>
+    <?php }?>
+    <h2>Public Designs</h2><br/>
+    <form id="form-public-designs">
+        <table cellspacing="1" cellpadding="5" id="public-designs">
+            <tbody>
+            <?php  foreach ($this->publicDesigns as $design) {
+    
+                $status = $design->getValidationStatus();
+    
+                printf('<tr id="%s">', $design->design_id);
+                printf('<td>%s</td>', $design->name);
+                printf('<td>%s</td>', $design->gramname);
+				printf('<td>%s</td>', $design->libname); 
+				printf('<td align="center">%s</td>', date("m/d/Y", strtotime($design->last_modification)));
+                printf('<td align="center"><a onclick="revalidateDesign(%s);" href="#"><img alt="%s" title="%s" src="/images/%s"></a></td>', $design->design_id, $status['title'], $status['title'], $status['image']);
+                printf('<td align="center"><a href="%s"><img src="/images/other/design_icon.png" /></a></td>', $this->url(array('module'=>'design', 'controller'=>'index', 'action'=>'index', 'design_id'=>$design->design_id)));
+                printf('<td align="center" valign="middle"><a href="%s"><img src="/images/other/sbml-logo-32.png"/></a></td>', $this->url(array('module'=>'simulate', 'action'=>'download', 'id'=>$design->design_id, 'type'=>'sbml'), null, true));
+                printf('<td align="center"><a href="%s"><img src="/images/other/simulate.png" height="32" /></a></td>', $this->url(array('action'=>'simulate', 'id'=>$design->design_id)));
+                if ($design->description != "") {
+                    	printf('<td><span class="ui-icon ui-icon-comment" title="%s"></span></td>', $design->description);
+                } else {
+                    	printf('<td></td>');
+                }		
+                echo '</tr>';
+            }
+            ?>
+              </tbody>
+        </table>
+    </form>
+    <table width="100%" style="padding-top: 20px;">
+        <tbody>
+            <tr>
+                <td width="20%" valign="middle" align="left"><b>Status Key:</b></td>
+                <td width="16%" valign="middle" align="center"><img alt="Sequence mismatch" src="/images/caution.png"><br>Out of date</td>
+                <td width="16%" valign="middle" align="center"><img alt="Under development" src="/images/under_development.png"><br>Unfinished</td>
+                <td width="16%" valign="middle" align="center"><img alt="Invalid design" src="/images/invalid_design.png"><br>Invalid</td>
+                <td width="16%" valign="middle" align="center"><img alt="Needs validation" src="/images/design_needs_validation.png"> <br>Needs validation</td>
+                <td width="16%" valign="middle" align="center"><img alt="Valid design" src="/images/valid_design.png"><br> Valid</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,10 @@
+<ul class="list-terminal"/>
+<?php 
+
+foreach ($this->parts as $part) {
+    printf('<li class="part" id="%s"><a class="tooltip" id="%s" title="%s">%s</a></li>', $part->id, $part->part_id, $part->description, $part->part_id);
+}
+
+?>
+
+</ul>

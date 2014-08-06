@@ -1,0 +1,40 @@
+<h1>Search</h1>
+<h2>Overview</h2>
+<p>
+The Search Module allows you to search for parts that can be added to your libraries.  There are three types of search: Basic, Advanced, and BLAST.  The Basic and Advanced Searches are Lucene-based text searches, 
+and allow users to execute searches based on a part's identifier, name, description, and/or category.  The BLAST search performs a homologous search based on parts' sequences using NCBI's blastn technology.
+Logged in users may also save searches that they think they may need again.
+</p>
+<h2>Basic Search</h2>
+<p>To do a Basic search, make sure that the Basic search option is selected on the left side of the page, enter the search term in the text area provided, and click on the <B>Search Parts</B> button.  Results of the search 
+will be displayed on the right side of the page, and a category-based filter will be available on the lower left-hand side of the page.  The Basic Search will search all fields (Part ID, Name, Description, and Sequence) for the search string,
+which may not be what you want.  In order to do a more granular search, switch to an <B>Advanced Search</B> by clicking on the <B>Advanced</B> link above the Basic search criteria.  For more information
+on the Lucene syntax, check out <a href="http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html" target="_blank">the Lucene Query Syntax Tutorial.</a>
+</p>
+<h2>Advanced Search</h2>
+<p>The Advanced Search option gives you the ability to specify more refined criteria for your searches, such as the field(s) to search, whether to search for parts that meet all of the criteria or any, or even parts that DON'T include the 
+criteria.  To do an advanced search, make sure the Advanced Search option is selected on the left side of the page and go through the following steps:</p>
+<p>1. Select the field you wish to <B>Search by</B> from the dropdown list (you may choose to search within a single field or all fields.)</p>
+<p>2. Type the text you want to search for in the <b>Value</b> text area.  Lucene is basically a "whole word" search engine, so if you want to search for "partial" words (ie, for a substring in a longer sequence), you will need to do a wild-card search.  To do a wild-card search, use asterixes (*) to indicate the endpoints of your search (ie, if I were searching for any part with "Tet" in the Part name, to include TetR promoters, I would type *Tet* in the <B>Value</B> field).</p>
+<p>3. To search for the entered <B>Value</B> as a phrase rather than as a series of independent words, check the <B>As Phrase</B> checkbox beneath the <B>Value</B> box.  As an example, if the <B>Value</B> entered is Repressible Promoter, then 
+if the <B>As Phrase</B> checkbox is checked, then the search will return all parts that contain "Repressible Promoter" in the selected <B>Search By</B> field; if the checkbox is not checked, then the search will return all parts that contain 
+either "Repressible" or "Promoter" in the <B>Search By</B> field.</p>
+<p>4. To search for parts that DON'T contain the value entered in the <B>Value</B> text area, check the <B>Exclude Value</B> checkbox.
+<p>5. Click on the <B>Add to Search</B> button to add the search criteria to the search.
+<p>Repeat the steps above to add additional criteria to your search.  Notice that the Search does not immediately go out and get the parts, but instead displays a link that reads <B>Refresh Results (##)</B>.  The ## represents the number of results that will be returned 
+if you run the query as it is currently designed.  If you want to lower that number, you can add more criteria to refine the search; if you want to raise that number, you can remove criteria by clicking on the "X" icon to the left of the criteria you wish to remove.  By default, the
+<B>MUST include ALL</B> criteria option is checked, but if you want to get the parts that meet any of the criteria, you can select <B>MAY include ANY</B> instead.  When you are done refining your search, you can either click on the <B>Refresh Results (##)</B> link or the <B>Refresh Results</B>
+button.</p>
+<h2>BLAST Search</h2>
+<p>The BLAST search performs a blastn search based on homologous sequence matches within the GenoCAD parts database.  To perform a BLAST search, click on the link to the "Blast" search at the top of the search menu and follow the instructions below:</p>
+<p>1. Enter the sequence you want to search for in the <B>Sequence</B> field.  Keep in mind that this must be a DNA sequence; an empty sequence field will result in no matches.</p>
+<p>2. If you want to limit the range of the sequence that is included in the search, you can enter values in the "From" and "To" textboxes.  These values are optional.</p>
+<p>3. Select the granularity of your search from the <B>Optimize for:</B> dropdown list.  The options are "Highly similar sequences", "More dissimilar sequences", and "Somewhat similar sequences".</p>
+<p>4. Click on the <B>Search Parts</B> button to perform your search.</p>
+<h2>Additional Search Features</h2>
+<p><B>Add Selected to Cart: </B>To add any of the parts that were returned by your search to your cart, check the checkboxes to the left of the parts you want, then click on the <B>Add Selected to Cart</B> button.  This will allow you to use found parts in your libraries.</p>
+<p><B>Save Search: </B>If you think this is a search you may want to run again sometime, you may save it.  On the lower left-hand side of the page, there is a section labelled <B>Saved Searches</B>.  In the <B>Query String</B> text area, you can see the lucene syntax that
+is used to run your query.</p>
+<p>If you want to save this search, you can enter a name in the <B>Save This Search</B> text box and click on the <B>Save</B> button.</p>
+<p>To reload a saved search, select the search from the <B>Load Saved Search</B> dropdown box and click on the <B>Load</B> button.</p>
+<p>If you want to delete a saved search, select it from the <B>Load Saved Search</B> dropdown list and click on the <B>Delete</B> button.</p> 

@@ -1,0 +1,7 @@
+delete from partslist_parts;
+
+delete from partslist;
+
+alter table partslist add user_id int(10);
+
+alter table partslist drop cart_id;

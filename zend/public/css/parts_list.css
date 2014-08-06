@@ -1,0 +1,128 @@
+@CHARSET "ISO-8859-1";
+#actions-mylib .ui-accordion .ui-accordion-header a { padding: 0.5em;}
+#actions-mylib .ui-accordion .ui-accordion-content { padding: 1em; }
+#actions-mylib .ui-state-default .ui-icon {background-image: url(/images/icon_edit.gif); width: 50px; background-position: 0 0;}
+#actions-mylib .ui-accordion .ui-accordion-header .ui-icon { position: absolute; left: 93%; top: 50%; margin-top: -8px; }
+#actions-mylib .ui-icon-circle-close { margin-left: 15px;}
+
+
+.ui-button {
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+#parts_list_wrapper {
+	margin-top: 15px;
+}
+#rightcol h2 {
+    padding-bottom: 3px;
+    margin-bottom: 7px;
+    border-bottom: 0px silver solid;
+}
+
+#parts_list_processing {
+	font-size: 15px;
+	color: red;
+	top: 90px;
+}
+
+#parts_list td.center {
+    text-align: center;
+}
+
+#parts_list .dataTables_empty {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#parts_list .catgroup {
+	text-transform: uppercase;
+	color: #E17009;
+}
+
+#parts_list .catgroup img {
+	padding-right: 10px;
+}
+
+#parts_list .odd, #parts_list tr.even td.sorting_2 {
+	background-color: #F1F9FE;
+}
+
+#parts_list tr.odd td.sorting_2 {
+	background-color: #DFEFFC;
+}
+
+.zend_form label {
+	font-size: 10px;
+	padding-right: 10px;
+}
+.zend_form label.required {
+    color: red;
+}
+dl.zend_form dt {
+    clear:both;
+    width: 125px;
+    float:left;
+    text-align:right;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+dl.zend_form dd {
+    margin:0 0 0.5em 0.7em;
+    color: #0F87FF;
+    font-size: .9em;
+}
+
+dl.zend_form dd ul li {
+    margin-left:75px;
+    font-size: .9em;
+    color: red;
+    clear: left;
+}
+
+.zend_form input, .zend_form select, .zend_form textarea {
+	font-family: arial,helvetica,sans-serif;
+	font-size: 10px;  
+}
+
+.zend_form [disabled] {
+    color: #000000;
+    background-color: #FAFAEF;
+    font-weight: bold;
+    border: 1px solid #EAEAEA;
+}
+
+#result_cnt {
+	font-size: 11px;
+	padding: 5px; 
+}
+a#refresh_results {
+	text-decoration: underline;
+}
+.dataTables_processing {
+    -moz-background-clip: border;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-background-clip: border;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    padding: .25em 1em;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.1em;
+    overflow: visible;
+    padding: 3px;
+    position: relative;
+    text-align: center;
+    text-decoration: none !important;
+    background:#FEF1EC url(../images/?new=fef1ec&w=1&h=400&f=png&q=100&fltr[]=over|textures/02_glass.png|0|0|95) repeat-x scroll 50% 50%;
+    border:1px solid #CD0A0A;
+    color:#CD0A0A;
+    font-weight: bold;
+    font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+    font-size: 1em;
+}

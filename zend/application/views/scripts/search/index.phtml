@@ -1,0 +1,760 @@
+<script charset="utf-8" type="text/javascript">
+
+    var filter_arr = new Array();
+    var index_arr = new Array();
+    var filter_idx = 0;
+    var query = '<?php echo $this->query; ?>';
+    var searchType = '<?php echo $this->searchType; ?>';
+    var sequence = '<?php echo $this->sequence; ?>';
+    var queryFrom = '<?php echo $this->queryFrom; ?>';
+    var queryTo = '<?php echo $this->queryTo; ?>';
+    var optimizeFor = '<?php echo $this->optimizeFor; ?>';
+    
+    $(document).ready(function() {
+        $("input:submit, button").button();
+
+        $('.check-all').click(function () {
+            checked_status = this.checked;
+            $('#' + this.form.id + " :checkbox[name*='part_id']").each(function() {
+                this.checked = checked_status;
+            });
+        });
+
+        $("#filter_include input:radio").click(function () {
+            getResultsCount();
+        });
+        $("#refresh_button").click(function () {
+        	<?php if ($this->blast) {?>
+        		sequence = $('#sequence').val();
+        		queryFrom = $('#queryFrom').val();
+        		queryTo = $('#queryTo').val();
+        		searchType = $('#searchType').val();
+        		optimizeFor = $('#optimizeFor').val();
+        		updateResults();
+        	<?php } else {?>
+        		updateResults();
+        	<?php }?>
+        });
+
+        $("#button_basic_search").click(function () {
+            <?php if ($this->blast) {?>
+        		sequence = $('#sequence').val();
+        		queryFrom = $('#queryFrom').val();
+        		queryTo = $('#queryTo').val();
+        		searchType = $('#searchType').val();
+        		optimizeFor = $('#optimizeFor').val();
+        		updateResults();
+        	<?php } else {?>
+        		query = $('#basic_search_query').val();
+        		updateResults();
+        	<?php }?>
+        });
+
+        $("#button_save_search").click(function () {
+        	saveSearch();
+        });
+
+        $("#button_delete_search").click(function(e) {
+        	e.preventDefault();
+            if (confirm('Are you sure you want to delete the selected Saved Search?')) {
+            	deleteSearch();
+            }
+        });
+
+        $("#button_add_parts").click(function () {
+        	addToCart();
+        });
+
+        $("#result_categories").jstree({
+            "types" : {
+                "valid_children" : [ "root" ],
+                "types" : {
+                	"root" : {
+                    	"valid_children" : [ "grammar" ],
+                        "close_node" : false
+                    },
+                    "grammar" : {
+                        "close_node" : true,
+                        "valid_children" : [ "category" ],
+                        "icon" : {
+                    	    "image" : "/images/propeller.png"
+                    	}
+                    },
+                    "category" : {
+                        "valid_children" : "none",
+                        "icon" : {
+                    	    "image" : "/images/grammar/icon_search.png"
+                    	}
+                    }	
+                }
+            },
+            "plugins" : [ "themes", "html_data", "ui", "types"],
+            "core" : { "initially_open" : [ "root" ] } 
+
+        })
+        .delegate("a", "click", function (event, data) { event.preventDefault(); }) ;
+
+    });
+
+
+    /*
+     * Function: filterCategory
+     */
+    function filterCategory(id) { 
+        oSearchDT.fnFilter(id, 4);
+        return (true);
+    }
+
+    /*
+     * Function: addToPartsList
+     * 
+     * 
+     */
+    function addToCart() {
+
+        var data = $("#search_results_form").serialize();
+
+        $.ajax({  
+            url: "/parts/partslist/add/",   
+            type: "POST",
+            data: data,       
+            cache: false,  
+            success: function () {
+                        $.ajax({
+                            url: '/api/partslist/count/',
+                            async: true,
+                            dataType: "json",
+                            success: function(data) {
+                               $("#form_messages").html('There are now ' + data.count + ' parts in your Cart.').show().delay(2000).fadeOut(400);
+                            }
+                          });
+                        $(':checkbox').attr('checked', false);
+                    }
+        });
+
+    }
+
+    function getResultsCount() {
+
+    	query = "";
+    	join = $("input:radio[name=filter_and]:checked").val();
+
+        if (filter_arr.length == 0) {
+        	$("#filter_update").hide();
+        	$("#filter_include").hide();
+        	$("#filter_refresh").hide();
+        } else {
+            $("#filter_update").effect('highlight', 'slow');
+            $('#result_cnt').html('<img src="/images/loading_sm.gif" align="absmiddle" /> Updating...');
+            $("#filter_include").show();
+            $("#filter_refresh").show();
+            
+            query = filter_arr.join(" " + join + " ");
+
+            $.getJSON("/api/search/hits?query=" + query, function(data) {
+                $('#result_cnt').html('<a id="refresh_results" href="javascript:updateResults();">Refresh Results (' + data.hits + ')</a>');
+            });
+        }
+
+        $("#query_text").html(query);
+    }
+
+    /*   Function: validateSave() 
+     *
+     *   This function checks the saved search list to see if another search
+     *   matches the same name as the saved search.
+     */
+    function validateSave(name) {
+
+    	var bFound = false;
+
+    	$('#select_search_id option').each(function(i, option){ 
+    	    if (name == $(option).text()) {
+        	    bFound = true;
+    	    } 
+    	});
+
+        if (bFound) {
+            return (confirm('A saved search with this name already exists, would you like to overwrite this?  Click "OK" to continue, or "Cancel" to abandon the save.'));
+        } else {
+            return true;
+        }
+    }
+
+    function saveSearch() {
+
+        var name = $('#text_search_name').val();
+        var bFound = false;
+
+        if (validateSave(name)) {
+            $.post("/search/save",
+                   {name: name, query: query},
+                   function (data) {
+
+                       if (data.status == "error") {
+                           $("#save_messages").removeClass('ui-state-highlight');
+                           $("#save_messages").addClass('ui-state-error');
+                       } else {
+                    	   $("#save_messages").removeClass('ui-state-error');
+                    	   $("#save_messages").addClass('ui-state-highlight');
+
+                           $('#select_search_id option').each(function(i, option){ 
+                               if (data.search_id == $(option).val()) {
+                                    bFound = true;
+                               } 
+                           });
+
+                           if (!bFound) {
+                               $('#select_search_id').append(
+                                   $('<option></option>').val(data.search_id).html(name)
+                               );
+                           }
+
+                       }
+
+                       $("#save_messages").html(data.message).show().delay(2000).fadeOut(400);
+
+                   },
+                   "json"
+                  );
+        }
+    }
+
+    function deleteSearch() {
+
+        var id = $('#select_search_id').val();
+
+        $.post("/search/delete",
+               {search_id: id},
+               function (data) {
+                   if (data.status == "error") {
+                       $("#save_messages").removeClass('ui-state-highlight');
+                       $("#save_messages").addClass('ui-state-error');
+                   } else {
+                       $("#save_messages").removeClass('ui-state-error');
+                       $("#save_messages").addClass('ui-state-highlight');
+                       $("#select_search_id option[value='" + id + "']").remove();
+                   }
+                   $("#save_messages").html(data.message).show().delay(2000).fadeOut(400);
+               },
+               "json"
+              );
+
+    }
+
+
+    function updateCategories () {
+
+    	// remove the existing categories
+    	$("#result_categories ul ul li").remove();
+        
+        var data = oSearchDT.fnGetData();
+        var arrCategories = Array();
+        var arrGrammars = Array();
+
+        for (i = 0; i < data.length; i++) {
+
+            // There can be multiple categories on a single part, which 
+            // are delimited by a semi-colon.  Split those into an array
+            categories = data[i][4].split(';');
+
+            // loop the categories tagged to a part and add them to the grammar array
+            for (j = 0; j < categories.length; j++) {
+
+                // split the attributes of a category into the attrs array
+                // Grammar ID | Name | Letter | Category
+                attrs = categories[j].split('|');
+
+                // check to see if we already have this grammar
+                //if (jQuery.inArray(attrs[3], arrGrammar) == -1) {
+                //    arrGrammar.push(attrs[1]+"|"+attrs[3]);
+                //}
+                var dup = 0;
+                
+                for (k = 0; k < arrGrammars.length; k++) {
+                    if (jQuery.inArray(attrs[0], arrGrammars[k]) != -1) {
+                    	dup = 1;
+                    	break;
+                	}
+                }
+
+                if (dup == 0) {		
+                    arrGrammars.push([attrs[0], attrs[1]]);
+                }
+                
+
+                var arrCategory = Array(3);
+                dup = 0;
+                arrCategory[0] = attrs[0];
+                arrCategory[1] = attrs[3];
+                arrCategory[2] = attrs[2];
+
+                for (k=0; k < arrCategories.length; k++) {
+                    if ((jQuery.inArray(attrs[0], arrCategories[k]) != -1) && (jQuery.inArray(attrs[3], arrCategories[k]) != -1)) {
+                        dup = 1;
+                        break;
+                    }
+                }
+
+                if (dup == 0) {   
+                    arrCategories.push(arrCategory);
+                } 
+                   
+                //style="background-image: url(/images/icons/grammar_' + attrs[0] + '/24x24/icon_' + attrs[1] + '.png);"
+            }
+        }
+
+        var makeStr = "";
+        for (i = 0; i < arrGrammars.length; i++) {
+            makeStr = makeStr + '<li rel="grammar"><a id="test" href="#" onClick="filterCategory(\'' + arrGrammars[i][0] + '|' + arrGrammars[i][1] + '\')">' + arrGrammars[i][1] + '</a><ul>';
+            for(j = 0; j < arrCategories.length; j++) {
+                var arrCategory = arrCategories[j];
+                if (arrCategory[0] == arrGrammars[i][0]) {
+                	makeStr = makeStr + '<li rel="category"><a id="test" href="#" onClick="filterCategory(\'' + arrGrammars[i][0] + '|' + arrGrammars[i][1] + '|' + arrCategory[2] + '|' + arrCategory[1] + '\')">' + arrCategory[1] + " (" + arrCategory[2] + ")" + '</a></li>';
+                }
+            }
+
+            makeStr = makeStr + '</ul></li>';
+        }
+        
+        $("#result_categories ul li ul").append(makeStr);
+
+        if (data.length > 0) {
+            $("#div_categories").show();
+            $('#result_categories').jstree('refresh');
+            $('#result_categories').jstree('open_all');
+        } else {
+            $("#div_categories").hide();
+        }
+
+    }
+
+    function updateResults() {
+     	$("#result_categories ul ul li").remove();
+    	<?php if ($this->blast) { ?>
+    	if (searchType!="") {
+			if ((queryFrom!="")&&(queryTo!="")) {
+				oSearchDT.fnReloadAjax("/api/search/results?blast=1&sequence=" + sequence + "&queryFrom=" + queryFrom + "&queryTo=" + queryTo  + "&optimizeFor=" + optimizeFor + "&searchType=" + searchType, function() { oSearchDT.fnFilter('', 4);} );
+			} else {
+				oSearchDT.fnReloadAjax("/api/search/results?blast=1&sequence=" + sequence + "&queryFrom=1" + "&queryTo=1000000000" + "&optimizeFor=" + optimizeFor + "&searchType=" + searchType + "&optimizeFor=" + optimizeFor, function() { oSearchDT.fnFilter('', 4);} );
+			}
+		} else {
+			if ((queryFrom!="")&&(queryTo!="")) {
+				oSearchDT.fnReloadAjax("/api/search/results?blast=1&sequence=" + sequence + "&queryFrom=" + queryFrom + "&queryTo=" + queryTo  + "&optimizeFor=" + optimizeFor + "&searchType=blastn"  + "&optimizeFor=" + optimizeFor, function() { oSearchDT.fnFilter('', 4);} );
+			} else {
+				oSearchDT.fnReloadAjax("/api/search/results?blast=1&sequence=" + sequence + "&queryFrom=1" + "&queryTo=1000000000"  + "&optimizeFor=" + optimizeFor+ "&searchType=blastn" + "&optimizeFor=" + optimizeFor, function() { oSearchDT.fnFilter('', 4);} );
+			}
+		}
+    	<?php } else { ?>
+         oSearchDT.fnReloadAjax("/api/search/results?query=" + query, function() { oSearchDT.fnFilter('', 4);} );
+        <?php } ?>
+         $("#filter_update").hide();
+        
+     }
+
+
+    function removeFilter(index) {
+        $("#filter_" + index).fadeOut('fast');
+
+        for (i = 0; i < index_arr.length; i++) {
+            if (index_arr[i] == index) {
+                idx = i;
+            }
+        }
+
+        filter_arr.splice(idx, 1);
+        index_arr.splice(idx, 1);
+
+        if (filter_arr.length == 0) {
+            $("#no_filter").show();
+        }
+
+        getResultsCount();
+    }
+
+    function applyFilter() {
+
+        var text = "";
+        var displayText = "";
+        var indexText = "";
+        var notText = "";
+        var value = $('#filter_value').val();
+        var phrase = $('#filter_phrase').is(':checked');
+        var not = $('#filter_not').is(':checked');
+        var field = $('#filter_field').val();
+
+        if (value == "") {
+            return;
+        }
+	
+	    if (phrase) {
+	        value = '"' + value + '"';
+	    }
+
+	    if (not) {
+	        notText = " NOT ";
+	    }
+
+	    if (field != "") {
+	        text = text + field + ":";
+	    }
+	    displayText = notText + text + value;
+	    indexText = notText + "(" + text + value + ")";
+
+	    filter_arr.push(indexText);
+	    index_arr.push(filter_idx);
+
+	    $('#filter').append('<div id="filter_' + filter_idx + '"style="margin: 5px; padding: 5px;" class="ui-state-highlight ui-corner-all"><p><a href="javascript:removeFilter(' + filter_idx + ');"><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-circle-close"/></a> ' + displayText + '</p></div>');
+        filter_idx++;
+
+	    // clear the form
+        $(':input','#filter_form')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+            .removeAttr('selected')
+            .removeAttr('checked');
+
+        $("#no_filter").hide();
+
+        getResultsCount();
+
+    }
+
+</script>
+
+<div id="page-content">
+<div id="wrapper" style="position: relative; display: inline;">
+    <div style="display: none; height: 0px;" id="dialog"></div>
+    <div style="float: left; width: 405px; padding-right: 10px;">
+        <?php if ($this->advanced) {?>
+        <div style="margin-bottom: 20px;">
+            <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+                <h4>Advanced Search: <span style="float: right">(<a style="text-decoration: underline;" href="/search">Basic</a>)(<a style="text-decoration: underline;" href="/search?blast=1">Blast</a>)</span></h4>
+            </div>
+            <form onSubmit="return(false);" id="filter_form">
+                <dl class="zend_form">
+                    <dt><label for="field">Search By:</label></dt>
+                    <dd>
+                        <select id="filter_field" name="field" style="margin-top: 5px;">
+                            <option value=""> - Any Field - </option>
+                            <option value="part_id">Part ID</option>
+                            <option value="part_name">Part Name</option>
+                            <option value="description">Description</option>
+                            <option value="category">Category</option>
+                        </select>
+                    </dd>
+                    <dt><label>Value:</label></dt>
+                    <dd>
+                        <textarea id="filter_value" name="value" style="width: 250px; height: 50px;"></textarea>
+                    </dd>
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <input id="filter_phrase" type="checkbox" value="1"/>As Phrase?
+                        <input id="filter_not" type="checkbox" value="1"/>Exclude Value</dd>
+                    <dt>&nbsp;</dt>
+                    <dd><input type="submit" value="Add to Search" onClick="applyFilter()"/></dd>                
+                </dl>
+            </form>
+            <li style="margin-left: 125px;">Use `*` as a multi-character wildcard</li>            
+        </div>
+        <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+            <h4>Search By: <span id="filter_update" class="ui-state-default" style="display: none; border: 0px; float: right"><span id="result_cnt"></span></span></h4>
+        </div>
+        <div id="filter_div">
+            <p id="filter_include" style="display: none; font-size: 10px; padding-top: 5px; text-align:center">
+                <input type="radio" value="and" name="filter_and" checked="checked" />MUST include ALL&nbsp;
+                <input type="radio" value="or" name="filter_and" />MAY include ANY
+            </p>
+            <p id="no_filter" style="padding-top: 5px; text-align:center">Add to filter using form above.</p>
+            <div id="filter"></div>
+            <p id="filter_refresh" style="display: none; font-size: 10px; padding-top: 5px; text-align:center">
+                <button id="refresh_button">Refresh Results</button>
+            </p>
+        </div>
+        <?php } elseif ($this->blast) {?>
+        <div style="margin-bottom: 20px;">
+            <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+                <h4>Blast Search: <span style="float: right">(<a style="text-decoration: underline;" href="/search">Basic</a>)(<a style="text-decoration: underline;" href="/search?advanced=1">Advanced</a>)</span></h4>
+            </div>
+            <form onSubmit="return(false);" id="filter_form">
+                <dl class="zend_form">
+                    
+                    <dt><label>Sequence:</label></dt>
+                    <dd>
+                        <textarea id="sequence" name="sequence" style="width: 250px; height: 50px;"></textarea>
+                    </dd>
+                    <dt><label>From:</label></dt>
+                    <dd>
+                        <textarea id="queryFrom" name="queryFrom" style="width: 50px; height: 10px;"></textarea>
+                    </dd>
+                    <dt><label>To:</label></dt>
+                    <dd>
+                        <textarea id="queryTo" name="queryTo" style="width: 50px; height: 10px;"></textarea>
+                    </dd>
+                    <dt><label for="optimizeFor">Optimize For:</label></dt>
+                    <dd>
+                    	<select id="optimizeFor" name="optimizeFor">
+                    		<option value="megablast">Highly similar sequences</option>
+                    		<option value="dc-megablast">More dissimilar sequences</option>
+                    		<option value="blastn">Somewhat similar sequences</option>
+                    	</select>
+                    </dd>
+                    <!-- dt><label for="searchType">Type of search:</label></dt>  -->
+                    <dd>
+                        <select id="searchType" name="searchType" style="margin-top: 5px;visibility: hidden">
+                            <option value="blastn">blastn</option>
+                            <option value="tblastn">tblastn</option>
+                            <option value="tblastx">tblastx</option> 
+                        </select>
+                    </dd> 		
+                    <dt>&nbsp;</dt>
+                    <dd><p style="margin-top: 5px; margin-left: 50px; text-align: center"><input id="button_basic_search" type="submit" value="Search Parts"/>
+            		</dd>              
+                </dl>
+            </form>            
+        </div>
+        <?php } else {?>
+        <div style="margin-bottom: 20px;">
+            <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+                <h4>Basic Search: <span style="float: right">(<a style="text-decoration: underline;" href="/search?advanced=1">Advanced</a>)(<a style="text-decoration: underline;" href="/search?blast=1">Blast</a>)</span></h4>
+            </div>
+            <form class="zendform" onSubmit="return(false);" id="filter_form">
+                <dl class="zend_form">
+                    <dt style="width: 60px;"><label>Query:</label></dt>
+                    <dd>
+                        <textarea id="basic_search_query" name="value" type="text" style="height: 50px; width: 300px;"><?php echo $this->query; ?></textarea>
+                        <p style="margin-top: 5px; margin-left: 50px; text-align: center"><input id="button_basic_search" type="submit" value="Search Parts"/></p>
+                    </dd>                
+                </dl>
+            </form>
+            <!--  commented this out until we can find a good document to post 
+            <li style="margin-left: 125px;">More information about the <a href="#">Lucene Query Syntax</a></li>
+            --> 
+        </div>
+        <?php }?>
+        <?php if (Genocad_Application::isLoggedIn()) { ?>
+        <div style="margin-top: 20px;">
+            <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+                <h4>Saved Searches:</h4>
+            </div>
+            <div id="save_messages" style="display: none; padding: 5px; margin-top: 10px; text-align: center" class="ui-corner-none"></div>
+            <div>
+                <dl class="zend_form">
+                    <?php if ($this->advanced) {?>
+                    <dt><label for"field">Query String:</label></dt>
+                    <dd>
+                        <textarea id="query_text" name="value" type="text" disabled="true" style="height: 30px; width: 255px;"></textarea>
+                    </dd>
+                    <?php }?>
+                    <dt><label for"field">Save This Search:</label></dt>
+                    <dd>
+                        <input id="text_search_name" type="text" name="name" style="width: 200px;" />
+                        &nbsp;<input type="submit" value="Save" id="button_save_search"/>
+                    </dd>
+                    <li style="margin-left: 125px;">Enter a name and click "Save"</li>
+                </dl>
+                <form class="zendform" method="get">
+                    <dl class="zend_form">
+                        <dt><label for"field">Load Saved Search:</label></dt>
+                        <dd>
+                            <select id="select_search_id" name="search_id" style="width: 140px; ">
+                                <option value="-1">- Select Saved Search -</option>
+                                <?php foreach ($this->saved_searches as $search) {
+                                    printf('<option value="%s" %s>%s</option>', $search->search_id, ($this->search_id == $search->search_id) ? 'selected="selected"' : '', $search->name);
+                                }?>
+                            </select>
+                            &nbsp;<input type="submit" value="Load"/>
+                            &nbsp;<button style="font-size: 10px; font-weight: normal;" id="button_delete_search">Delete</button>
+                        </dd>                
+                    </dl>
+                </form>
+            </div>
+        </div>
+        <?php } ?>
+        <div style="margin-top: 20px; display: none;" id="div_categories">
+            <div style="padding: 5px;" class="ui-state-default ui-corner-all">
+                <h4>Categories:</h4>
+            </div>
+            <div id="result_categories">
+                <ul>
+                    <li rel="root" class="jstree-open"><a href="#" onClick="filterCategory('')">Show All Categories</a>
+                        <ul></ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="rightcol" class="" style="margin-left: 0px; padding: 5px; width: 525px; float: left;">
+        <div id="form_messages" class="ui-state-highlight ui-corner-all" style="padding: 5px; margin-bottom: 5px; display:none;"></div>
+        <h2>Search Results <?php if ($this->hits) { echo " - " . $this->hit_count . " result(s)"; } ?></h2>
+        <form id="search_results_form" onSubmit="return(false);">
+        <div style="display: inline;">
+        <?php if (Genocad_Application::isLoggedIn()) { 
+        	$cartDisabled = "";
+        } else {
+        	$cartDisabled = "disabled";	
+        }?>
+        <button id="button_add_parts" <?php echo $cartDisabled; ?>>Add Selected to My Cart</button>
+        <!--  <span style="float: right;">Save Search:&nbsp;<input type="text" name="save"/>&nbsp;<input type="submit" value="Save"/></span> -->
+        </div>
+        <p>&nbsp;</p>
+        <table id="search" width="100%"></table>
+        </form>
+    </div>
+</div>
+</div>
+<script>
+var $loading = $('<div style="position: absolute; top: 100px; left: 275px;"><img src="images/loading.gif" alt="loading"></div>');
+
+<?php if ($this->blast) {?>
+	var sBaseUrl = "/api/search/results?blast=1&sequence=" + sequence + "&queryFrom=" + queryFrom + "&queryTo=" + queryTo + "&searchType=" + searchType + "&optimizeFor=" + optimizeFor;
+<?php } else {?>
+ 	var sBaseUrl = "/api/search/results?query=" + query;
+<?php } ?>
+
+oSearchDT = $("#search").dataTable( {
+    "fnDrawCallback": function ( oSettings ) {
+        if ( oSettings.aiDisplay.length == 0 ) {
+            return;
+        }
+        
+        $('.part-detail').click(function(e) {
+            e.preventDefault();
+            showPartDetail(this.id, false);
+        });
+        $('.part-edit').click(function(e) {
+            e.preventDefault();
+            showPartDetail(this.id, true);
+        });
+        updateCategories();
+    },
+    "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
+    "iDisplayLength": 25, 
+    "bJQueryUI": true,
+    "bAutoWidth": false,
+    "bProcessing": true,
+    "sAjaxSource": sBaseUrl,
+    "sPaginationType": "full_numbers",
+    "oLanguage": {
+        "sSearch": "Filter records:",
+        "sEmptyTable": "Execute a search on the left",
+        "sZeroRecords": "No records to display",
+        "oPaginate" : { "sPrevious" : "Prev" }
+    },
+    <?php if ($this->blast) { ?>
+    	"aoColumns": [
+                  { "sTitle" : "<input type=\"checkbox\" class=\"check-all\" />", "sWidth" : "25px", "bSortable": false, "sClass" : "center"},
+                  { "sTitle" : "Part ID", "sWidth": "75px"},
+                  { "sTitle" : "Part Name"},
+                  { "sTitle" : "Evalue"},
+                  { "sTitle" : "Category", "bVisible": false},
+                  { "sTitle" : "Bit Score"},
+                  { "sTitle" : "Query Coverage", "sWidth": "60px"}
+    			]
+    <?php } else { ?>
+	    "aoColumns": [
+                  { "sTitle" : "<input type=\"checkbox\" class=\"check-all\" />", "sWidth" : "25px", "bSortable": false, "sClass" : "center"},
+                  { "sTitle" : "Part ID", "sWidth": "75px"},
+                  { "sTitle" : "Part Name"},
+                  { "sTitle" : "Score", "sWidth": "60px"},
+                  { "sTitle" : "Category", "bVisible": false}
+               ]
+    <?php } ?>
+    }
+);
+
+function showPartForm(url)
+{
+
+  $('#dialog')
+      .append($loading.clone())
+      .load(url, function(text, status, xhr) {
+          if (status == "success") {
+              $("#category_id").multiselect2side({moveOptions: false, labelsx: "", labeldx: ""});
+          }
+      })
+      .dialog({
+        width: 700,
+        minHeight: 500,
+        title: "Edit Part",
+        modal: true,
+        resizable: false,
+        close: function() {$("#dialog").html(''); $('#dialog').dialog('destroy'); },  // Destroy the dialog.  Allows it to appear again if closed.
+        buttons: {"Save": function() {
+                      $(":button:contains('Save')").button("disable");
+                      savePart(url); 
+                  },
+                  "Cancel": function() {
+                       $(this).dialog("close");
+                  }
+                 }
+      });
+  
+}
+
+function showPartDetail(id, allow_edit)
+{
+  $('#dialog')
+      .append($loading.clone())
+      .load('/parts/part/detail/id/' + id, function(text, status, xhr) {
+          if (status == "success") {
+              $("#part :input").attr('disabled', true);
+              $("#attribute-accordion").accordion({ collapsible: true });
+              $("#part-tabs").tabs();
+          }
+      })
+
+      .dialog({
+        width: 700,
+        minHeight: 500,
+        title: "Part Detail",
+        modal: true,
+        resizable: false,
+        close: function() {$("#dialog").html(''); $('#dialog').dialog('destroy'); },  // Destroy the dialog.  Allows it to appear again if closed.
+        buttons: {
+            "Close": function() {
+                 $(this).dialog("close");
+            }
+       }
+      });
+
+  if (allow_edit) (
+      $("#dialog").dialog( "option", "buttons", {
+          "Edit": function() {
+    	  if ($("#part-tabs").tabs('option', 'selected') == 1) {
+              showAttributeForm('/parts/part/edit-attribute/id/' + id);
+          } else {
+          	showPartForm('/parts/part/edit/id/' + id);
+          }
+          },
+          "Close": function() {
+              $(this).dialog("close");
+         }
+      })
+  )
+
+}
+
+function savePart(url) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: $("#part").serialize(),
+        success: function(response) {
+            if (typeof(response) === "object") {
+                $("#form_messages").html(response.response).show().delay(2000).fadeOut(400);
+                $("#dialog").dialog('close');
+                $('#library_tree').jstree('refresh');
+                $('#myparts_tree').jstree('refresh');
+            } else {
+                // It's a html snippet
+                $("#dialog.ui-dialog-content").html(response);
+                $("#category_id").multiselect2side({moveOptions: false, labelsx: "", labeldx: ""});
+                $(":button:contains('Save')").button("enable");
+            } 
+        }
+  });
+  return;
+}
+</script>

@@ -1,0 +1,49 @@
+<style>
+td label {
+    width: 100%;
+}
+</style>
+<script charset="utf-8" type="text/javascript">
+    $(document).ready(function() {
+        $("div.ms2side__options p").button();
+    });
+</script>
+<div>
+    <form id="part-attribute">
+    <input type="hidden" id="part_id" name="part_id" value="<?php echo $this->part->id ?>"/>
+    <p>Click the Category Name to view the values associated each attribute associated with each Category.</p>
+    <div id="attribute-accordion">
+        <?php foreach ($this->categories as $category) {
+            if ($category->hasAttributes()) {
+                printf('<h3><a href="#">%s</a></h3><div><table cellpadding="3" cellspacing="2">', $category->getLabel());
+    
+                $attributes = $category->getAttributes();
+                foreach ($attributes as $attribute) {
+                    $item = $attribute->getFormItem($this->part->id);
+                	if ($attribute->attribute_type_id != 2) {    
+                    	printf('<tr>%s</tr>', $item);
+                	} else {
+                    	// Need to add buttons
+                    	//printf('<tr><td><table><tr>%s<td><table>', $item);
+                    	//printf('<tr><table border="2"><tr>%s</tr></table><tr>', $item);
+                    	printf('<tr>%s</tr>', $item);
+                    	$addButton = new Zend_Form_Element_Button("addButton_".$attribute->id);
+        				$addButton->setLabel('Add Mapping')
+        				          -> setAttrib('onClick', 'addMappingAttribute('.$this->part->id.",".$attribute->id.');');
+        				$editButton = new Zend_Form_Element_Button("editButton_".$attribute->id);          
+        				$editButton->setLabel('Edit Mapping')
+        						  -> setAttrib('onClick', 'editMappingAttribute('.$this->part->id.",".$attribute->id.');');          
+        				$removeButton = new Zend_Form_Element_Button("removeButton_".$attribute->id);          
+        				$removeButton->setLabel('Remove Mapping')
+        						  -> setAttrib('onClick', 'removeMappingAttribute('.$this->part->id.",".$attribute->id.');');          
+        				//printf('<tr><td>%s</td></tr><tr><td>%s</td></tr><tr><td>%s</td></tr></table></td></tr></table></td></tr>', $addButton, $editButton, $removeButton);
+        				printf('<tr><td>&nbsp;</td><td><table cellpadding="0" cellspacing="0"><tr><td valign="top" align="left">%s</td><td valign="top" align="left">%s</td><td valign="top" align="left">%s</td></tr></table></td></tr>', $addButton, $editButton, $removeButton);
+                    }
+                }
+                echo '</table></div>';
+            }
+        }?>
+
+    </div>
+    </form>
+</div>

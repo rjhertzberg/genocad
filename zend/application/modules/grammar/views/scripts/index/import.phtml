@@ -1,0 +1,91 @@
+<div id="page-content">
+    <div style="margin-bottom: 10px; border-bottom: 2px solid #C5DBEC; height: 40px;">
+        <h1 style="float: left; padding-right: 10px;">Import Grammar</h1>
+    </div>
+
+    <?php  if (isset($this->errors)) {
+        echo '<div class="ui-corner-all" style="font-weight: bold; padding: 5px; text-align: center; border: 1px solid #FAD42E; background-color: #FFFFCC">';
+        foreach ($this->errors as $error) {
+            echo '<li>' . $error . '</li>';
+        }
+        echo '</div>';
+    } ?>
+
+    <?php if ($this->process_step == 1) {
+        echo $this->form;
+    } else { ?>
+        <h3>You are about to import the following grammar:</h3>
+        <form method="post" action="" enctype="multipart/form-data" class="zend-form" id="form_import">
+            <input type="hidden" name="step" value="2"/>
+            <input type="hidden" name="icon_set" value="<?php echo $this->grammar->icon_set ?>"/>
+            <div style="float: left; padding-top: 10px;">
+                <table width="100%" cellspacing="2" cellpadding="3">
+                    <tr><td class="label">Grammar Name:</td><td><?php echo $this->grammar->name; ?></td></tr>
+                    <tr><td class="label">Description:</td><td><?php echo $this->grammar->description; ?></td></tr>
+                    <tr><td class="label"># Categories:</td><td><?php echo $this->grammar->categories->children()->count(); ?></td></tr>
+                    <tr><td class="label"># Rules:</td><td><?php echo $this->grammar->rules->children()->count(); ?></td></tr>
+                    <tr><td class="label">Icon Set:</td><td><?php echo $this->grammar->icon_set; ?> (<?php echo ($this->icon_set_exists ? "EXISTING" : "NEW");?>)</td></tr>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+            <?php if ($this->icon_set_exists) { ?>
+                <div style="padding: 5px; margin-top: 10px; font-weight: bold;" class="message ui-state-highlight ui-corner-all">
+                    <span style="float: left; margin-right: 0.3em; position:relative; top:-1px;" class="ui-icon ui-icon-info"></span>
+                    <span>An icon set with the same name as the one being imported already exists.  What would you like to do?</span>
+                </div>
+                <?php if($this->invalid) {
+                    echo '<div class="ui-content ui-corner-all ui-state-error" style="padding: 5px">You must select a value.</div>'; 
+                } ?>
+                <div style="padding: 5px;" class="ui-content">
+                    <?php echo $this->form2; ?>
+                </div>
+            <?php } ?>
+            <div style="clear:both;"></div>
+            <div style="padding: 10px; margin-top: 10px; border-top: 1px solid silver;">
+                <a id="continue" href="#">Continue Import</a>&nbsp;&nbsp;
+                <a id="cancel" href="/parts">Cancel Import</a>
+            </div>
+        </form>
+    <?php } ?>
+</div>
+<div id="loading" style="display: none;" class="ui-content ui-state-error">
+    <img style="vertical-align: middle" src="/images/loading.gif"/> Loading...
+</div>
+<script>
+
+    $("a#continue, a#cancel").button();
+    $("a#continue").click(function() {
+
+        $('#loading')
+            .dialog({
+              width: 150,
+              height: 30,
+              modal: true,
+              resizable: false,
+              dialogClass: 'dialogLoading'
+             });
+        
+        $("#form_import").submit();
+        $("a#continue, a#cancel").button("disable");
+    });
+
+    var row = $("#new_icon_set").closest("tr");
+    var val = $('#form_import input[type=radio]:checked').val();
+
+    if (val == "2") { 
+        $(row).show();
+    } else {
+    	$(row).hide();
+    }
+
+    $("input[type=radio]").click(function() {
+        if (this.value == 2) {
+            $(row).fadeIn();
+        } else {
+            $(row).fadeOut().hide();
+        }
+    });
+    
+    disableFormSubmit();
+
+</script>

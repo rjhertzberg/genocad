@@ -1,0 +1,96 @@
+<?php 
+   $isLoggedIn = Genocad_Application::isLoggedIn();
+?>
+
+<div id="processing" class="ui-state-error" style="display: none; margin-top: 5px;">Loading Design, please wait...</div>
+<div style="display: none; height: 0px;" id="save_dialog">
+    <?php echo $this->design_form; ?>
+</div>
+
+<div id="page-content">
+<div>
+    <div style="padding-bottom: 4px; border-bottom: 3px solid #b1d9e9;">
+        <label>Grammar/Library:</label>
+        <select onchange="selectGrammar();" name="grammar_id" id="grammar_id" style="width: 300px;">
+            <option value="-1"> - Select Grammar - </option>
+            <?php
+                foreach ($this->grammars as $grammar) {
+                    printf('<option value="%s"%s>%s</option>', $grammar->grammar_id, ($this->grammar_id == $grammar->grammar_id ? ' selected="selected"' : ""), $grammar->name);
+                } 
+            ?>
+        </select>
+        <select onchange="selectLibrary();" name="library_id" id="library_id" style="width: 250px; margin-right: 20px;">
+            <option value="-1"> - Select Library - </option>
+        </select>
+        <button id="btn_new">New Design</button>
+        <a id="btn_load" href="<?php echo $this->url(array('module'=>'design','controller'=>'index', 'action'=>'my-designs'), null, true); ?>">Load Design...</a>
+    </div>
+    <div style="clear:both;"></div>
+    <div style="position: relative;margin-top: 3px; ">
+        <div id="design-title" style="float: left;">
+            New Design
+        </div>
+        <div id="design-status" style="float: right">
+            <?php
+                 if (isset($this->design->design_id)) {
+                     $status = $this->design->getValidationStatus();
+                     printf('<img src="/images/%s" alt="%s" height="10" width="10" /> %s', $status['image'], $status['title'], $status['title']);
+                }
+            ?>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+    <div id="historycontainer">
+        <div id="historyheader" style="text-align: center">
+            <h2 style="padding-top: 3px;">History</h2>
+        </div>
+        <div id="historywrapper">
+            <ul id="history"></ul>
+        </div>
+    </div>
+    <div id="sequencecontainer">
+
+        <div id="sequenceheader" >
+            <div style="width: 823px;">
+                <?php if ($isLoggedIn) { ?>
+                <div id="save-design" style="display: block; float: left;">
+                    <button id="btn_save">Save Design...</button>
+                </div>
+                <?php } ?>
+                <div id="status" style="display: none; float: right;">
+                    <a onclick="downloadSequence('text');" href="#"><img alt="Sequence ready! Download your sequence." src="/images/sequence_ready.gif"></a>
+                    <a onclick="downloadSequence('genbank');" href="#"><img alt="Download your sequence in GenBank format." src="/images/sequence_genbank.gif"></a>
+                </div>
+            </div>
+            <div class="clear">&nbsp;</div>
+        </div>
+        <div id="sequenceframe">
+            <div id="thecontainer"></div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+$('#library_id').attr('disabled', 'disabled');
+$('button').button(); 
+$('#controlframe').attr('style', 'background: #FFFFFF;');
+$('#btn_start').click(function() { if (confirm('Are you sure?  This will clear your current design.')) { startDesign(); } });
+$('#btn_save').click(function() { showSaveDesign(); });
+
+$('#btn_new').click(function() { newDesign(); })
+             .button("disable");
+
+$('#btn_load').button();
+
+//$('#btn_save').button("disable");
+
+<?php 
+   if (isset($this->design->design_id)) {
+        echo 'reloadDesign(' . $this->design->design_id . ');';
+   }
+?>
+$(document).ready(function() {
+    initDesign();
+
+});
+</script>

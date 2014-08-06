@@ -1,0 +1,284 @@
+html {
+	background: #efefef;
+	margin:0 0 0 -1px;
+	padding:0;	
+	overflow-Y: scroll;
+}
+
+
+body {
+	padding:0;
+	margin :0;
+	display:table; 
+	width:100%;	
+}
+
+
+body {
+	color:#656565;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: normal;
+	text-transform: normal;
+}
+
+body {
+    background-color:#efefef;
+    background-image:url( images/body-bg.jpg );
+    background-position:center top ;
+    background-repeat:repeat-x;
+}
+input, textarea, select, option {
+	font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+p {
+	letter-spacing: normal;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #005596;
+    margin: 0;
+    padding: 0;
+}
+
+a:link, a:visited {
+	color:#1860a8;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#7C0040;
+	text-decoration:underline;
+}
+	
+					
+#wrapper {
+	background: transparent url( images/page-vbg.jpg ) repeat-y scroll 50% 0px;
+	margin:0 auto ;
+	width:100%;
+}
+
+
+#bg {
+	margin:0 auto;
+	padding:0;
+	background:transparent ;
+	background-image:url(images/hat.jpg);
+ 	background-repeat:no-repeat;	
+	background-position: center top ;
+}
+
+
+#header {
+	margin: 0 auto;
+	min-height:25px;
+	height: 25px;
+	width: 975px;
+}
+
+#container {
+	margin: 0 auto;
+	width: 976px;
+}
+
+#banner {
+	margin: 0 auto;
+	width:100%;
+	height: 100px;
+}
+
+img#logo {
+    padding-top: 5px;
+    padding-left: 10px;
+}
+
+#navigation {
+	height: 39x;
+	margin: 0 auto;
+	text-align: left;
+	position: relative;
+	width: 975px;
+	float: left;
+	background: url(images/inactive_left.png) repeat-x top left;
+}
+
+#navigation ul {
+	display:table;
+	margin:0 auto;
+	padding:0;
+	list-style-type:none;
+	position:relative;
+	height:39px;
+	text-transform:uppercase;
+}
+
+
+#navigation ul li {
+	display:block;
+	float:left;
+	margin:0;
+	padding:0 25px 0 0;
+	background: url(images/inactive_right.png) no-repeat right;
+}
+
+#navigation ul li.last-child {
+    display:block;
+    float:left;
+    margin:0;
+    padding:0 25px 0 0;
+    background: url(images/inactive_left.png) no-repeat right;
+}
+
+#navigation ul li a {
+	display:block;
+	float:left;
+	1color:#7C0040;
+	text-decoration:none;
+	padding:0px 25px;
+	line-height:39px;
+	font-weight:bold;
+	background: url(images/inactive_left.png) no-repeat left;
+	font-size: 1.1em;
+	width: 250px;
+}
+
+#navigation ul li a:hover {
+	text-decoration: underline;
+}
+
+#navigation ul li.current {
+	background: url(images/active_arrow.png) no-repeat right; 
+}
+
+#navigation ul li.current a {
+	background:url(images/active_left.png) no-repeat left; 
+	margin-left: -25px; 
+	padding-left: 50px;
+    color: white;
+}
+
+#navigation ul li.current:first-child a {
+    background:url(images/first_active.png) no-repeat left; 
+    margin-left: 0px; 
+    padding-left: 25px;
+}
+
+#navigation ul li.current-last-child {
+    background:url(images/active_left.png) no-repeat left; 
+    padding-left: 25px;
+    margin-left: -25px; 
+}
+
+
+#content {
+	margin:0 auto ;
+	padding: 0px;
+	text-align:left;
+    overflow: hidden;
+    position: relative;
+}
+#page-content {
+    margin:0 auto;
+    padding: 10px;
+    text-align:left;
+    overflow: hidden;
+    position: relative;
+}
+
+#page-content h1 {
+	margin-bottom: 10px;
+}
+
+#footerWrapper {
+	margin:0 auto;
+	margin-top: 20px;
+	height:130px;
+	padding:0;
+	background:transparent url( images/footerWrapper-bg.jpg ) no-repeat scroll center top;
+}
+
+
+#footer {
+	margin:0 auto;
+	padding:0;
+	width:975px;
+	height:50px;
+}
+
+
+#footer {
+	color:#005596;
+	text-align:center;
+}
+
+a img {
+	border:none;
+} 
+
+
+.clear {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+label, td.label {
+    padding-right: 20px;
+    font-weight: bold;
+    font-size: 1.0em;
+    font-family: arial,helvetica,sans-serif;
+    width: 150px;
+}
+
+.form-error
+{
+    display: block;
+    background-color: #FFFFCC;
+    border: 1px #efefcc solid;
+    border-width: 1px 0;
+    padding: 4px 0;
+    margin: 4px 0;
+}
+
+.required:after{
+    content:' * ';
+    color: red;
+}
+
+div.home-tab {
+    float: left; 
+    width: 300px; 
+    text-align: center; 
+    border-right: 2px solid #7D7D7D; 
+    padding: 10px; 
+    min-height: 225px; 
+}
+div.shadow {
+    position: relative; 
+    left: -1px; 
+    height: 5px; 
+    background: url(images/shadow.png) repeat-x top left;
+}
+div#login {
+	float: right;
+	margin: 5px;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+table.user-form ul.errors li {
+    font-size: .9em;
+    color: red;
+    clear: left;
+    position: relative;
+    top: -10px;
+    left: -40px;
+    list-style: bullet;
+}

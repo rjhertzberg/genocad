@@ -1,0 +1,618 @@
+@charset "UTF-8";
+/* buildingblock styles */
+html, body
+{
+	font-family:arial,helvetica,sans-serif;
+	font-size:12px;
+  height: 100%;
+	margin: 0; padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+	padding-bottom: 5px;
+}
+p {
+	margin: 0;
+	padding: 0;
+}
+a img {
+	border-width: 0;
+}
+
+ul.clean, ul.clean li, ol.clean, ol.clean li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ul.inline {
+	overflow: auto; /* contain floats nicely */
+}
+ul.inline li {
+	float: left;
+}
+div.clear
+{
+	clear: both;
+	font-size: 0px;
+}
+
+/* now for layout */
+div#upperpage {
+	background: transparent url(../images/upperpage-background-tile.jpg) 50% top no-repeat;
+	width:100%;
+	margin: 0;
+	padding: 0;
+	height: 100px;
+	overflow: hidden;
+}
+div#lowerpage {
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/lowerpage-background-tile.gif) 50% top no-repeat;
+	min-height: 400px;
+	height: auto !important;
+	height: 400px;
+}
+
+p#homelink {
+	position: absolute;
+	display: block;
+	top: 10px;
+	right: 34px;
+}
+p#logo {
+	display: block;
+	position: absolute;
+	top: 30px;
+	left: 22px;
+}
+ul#mainnav {
+	position: absolute;
+	bottom: 0px;
+	right: 30px;
+	overflow: hidden;
+}
+ul#mainnav li {
+	margin: 0 1px;
+	background: #006 url(../images/tab-background-left.jpg) top left no-repeat;
+	color: #fff;
+	padding: 0;
+	font: bold 14px Arial, Helvetica, sans-serif;
+}
+ul#mainnav li a {
+	display: block;
+	margin: 0;
+	padding: 8px 5px 6px 5px;
+	color: #fff;
+	width: 6em;
+	text-align: center;
+	text-decoration: none;
+	background: transparent url(../images/tab-background-right.jpg) top right no-repeat;
+}
+div#well {
+	width: 975px;
+	margin: 0 auto;
+	padding: 0px;
+	overflow: hidden;
+}
+div.fpcol {
+	background-color: #cfc;
+	margin: 0;
+	padding: 0;
+	min-height: 500px;
+	height: auto !important;
+	height: 300px;
+}
+div#well #colone {
+	width: 268px;
+	background: #fff url(../images/col-seperator.gif) right top repeat-y;
+	float: left;
+}
+div#well #colone p {
+	font: 15px Arial, Helvetica, sans-serif;
+	line-height: 1.6;
+	margin: 0 0 25px 0;
+	padding: 0 25px;
+}
+div#well #colone p.footnote {
+	color: #666;
+	font: 10px/1.3 Arial, Helvetica, sans-serif;
+}
+div#well #colone p.footnote a {
+	color: #0d5c7e;
+	text-decoration: none;
+}
+div#well #colone p.footnote a:hover {
+	color: #00f;
+	text-decoration: none;
+}
+div#well #coltwo {
+	background: #fff url(../images/col-seperator.gif) right top repeat-y;
+	width: 270px;
+	float: left;
+}
+div#well #coltwo h2#design {
+	margin-top: 2px;
+	text-align: right;
+}
+div#well #colthree {
+	background-color: #fff;
+	width: 268px;
+	float: left;
+}
+div#well #colthree h2#validate {
+	text-align: right;
+}
+div#well ul
+{
+	font: 12px Arial, Helvetica, sans-serif;
+}
+#onecol {
+	padding: 30px;
+	padding-top: 5px;
+	overflow:auto;
+}
+div.fpcol #validatesteps, div.fpcol #designsteps {
+	margin: 25px;
+}
+div.fpcol #validatesteps li, div.fpcol #designsteps li {
+	font: 15px/1.6 Arial, Helvetica, sans-serif;
+	margin: 18px 0;
+}
+#designsteps li, #validatesteps li {
+	padding-left: 45px;
+	min-height: 39px;
+	height: auto !important;
+	height: 39px;
+}
+#designsteps li.listone {
+	background: transparent url(../images/list-one-orange.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#designsteps li.listtwo {
+	background: transparent url(../images/list-two-orange.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#designsteps li.listthree {
+	background: transparent url(../images/list-three-orange.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#designsteps li.listfour {
+	background: transparent url(../images/list-four-orange.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#validatesteps li.listone {
+	background: transparent url(../images/list-one-green.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#validatesteps li.listtwo {
+	background: transparent url(../images/list-two-green.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#validatesteps li.listthree {
+	background: transparent url(../images/list-three-green.gif) top left no-repeat;
+	padding-top: 7px;
+}
+#validatesteps li.listfour {
+	background: transparent url(../images/list-four-green.gif) top left no-repeat;
+	padding-top: 7px;
+}
+div.startButton {
+	text-align: center;
+}
+
+
+/* Flexible Layout overrides */
+body.flex div#upperpage {
+	background: transparent url(../images/upperpage-background-tile-noframe.jpg) 50% top no-repeat;
+}
+
+body.flex div#lowerpage
+{
+	background: #fff url(../images/lowerpage-background-tile-noframe.gif) top left repeat-x;
+}
+
+body.flex div#header {
+	width: 100%;
+	height: 117px;
+}
+
+body.flex ul#mainnav {
+	bottom: 16px;
+}
+
+body.flex #whiteframe {
+	border: 0px #FF0 solid;
+	height: 25px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	overflow: hidden;
+}
+body.flex #frame-background {
+	background: transparent url(../images/frame-center.png) top right repeat-x;
+	height: 25px;
+	margin: 0 40px 0 40px;
+}
+
+body.flex #fr-left-corner {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+body.flex #fr-right-corner {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+
+body.flex div#well {
+	width: 100%;
+	min-height: 400px;
+	height: auto !important;
+	height: 400px;
+	background: transparent url(../images/frame-left-corner.png) left -25px no-repeat;
+	padding-top: 0;
+}
+
+body.flex div#well2 {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+	overflow: hidden;
+	min-height: 400px;
+	height: auto !important;
+	height: 400px;
+	background: transparent url(../images/frame-right-corner.png) right -25px no-repeat;
+}
+
+body.flex #onecol {
+	padding: 0px;
+	overflow:auto;
+}
+
+#onecol h1 
+{
+    font: bold 18px verdana, arial, helvetica, sans-serif;
+    margin: 0 0 10px 0;
+	color: #0d5270;
+}
+
+#onecol h2
+{
+    font: bold 14px verdana, arial, helvetica, sans-serif;
+    margin: 0 0 10px 0;
+	color: #0d5270;
+}
+
+
+div.category
+{
+   font: bold 14px arial, helvetica, sans-serif;
+   margin-bottom: 5px;
+   cursor: pointer
+}
+
+div.members ul, div.members li
+{
+   margin: 0; padding: 0; list-style: none;
+}
+
+div.members
+{
+   margin-bottom: 10px;
+}
+
+div.members li
+{
+   margin-left: 40px;
+   font: 12px/1.5 arial, helvetica, sans-serif;
+}
+
+dt, dd
+{
+	font: 14px/1.5 arial, helvetica, sans-serif;
+}
+
+dt
+{
+	font-weight: bold;
+	color: #333;
+}
+
+dd
+{
+	margin-bottom: 21px;
+}
+
+#onecol p
+{
+    font: 14px/1.5 arial, helvetica, sans-serif;
+    margin: 10px 0;
+}
+
+body.flex  #onecol p {
+	margin: 0px;
+}
+
+/* tooltips */
+.tool-tip
+{
+	background-color:  #1a3b49;
+	color: #fff;
+	padding: 10px;
+	font: 12px Verdana, Arial, Helvetica, sans-serif;
+	z-index: 1000;
+}
+
+/**** Form styles ****/
+
+form .textbox
+{
+   /*border: 1px #ccc solid;
+   padding: 4px;*/
+}
+
+form .textbox:focus
+{
+   background-color: #FFC;
+}
+
+form .required .textbox
+{
+	/*border-color: #300;*/
+}
+
+.user-form th
+{
+   text-align: left;
+   padding-right: 10px;
+}
+
+label
+{
+   /*font-weight: bold;*/
+   font: 14px/1.5 arial, helvetica, sans-serif;
+   color: #333;
+}
+
+.user-form td, .user-form th
+{
+	font: normal 1.0em arial, helvetica, sans-serif;
+}
+
+.required th, tr.required td
+{
+	color: #C00;
+}
+/*
+#submit, .button
+{
+   font: bold 1.0em verdana, arial, helvetica, sans-serif;
+   text-transform: uppercase;
+   border: 2px #0D5270 solid;
+   color:  #0D5270;
+   background-color: #fff;
+}
+
+#submit:hover, .button:hover
+{
+	background-color: #89b9ce;
+	color: #fff;
+}
+*/
+.user-form .note
+{
+	font: 1.0em Arial, Helvetica, sans-serif;
+	color: #333;
+}
+
+.user-form .error
+{
+	display: block;
+	background-color: #FFFFCC;
+	border: 1px #efefcc solid;
+	border-width: 1px 0;
+	padding: 4px 0;
+	margin: 4px 0;
+}
+
+
+/*** User pages ***/
+
+#user-header
+{
+
+}
+
+#user-header h1
+{
+   float: left;
+   margin: 0; padding: 0;
+}
+
+#user-header p
+{
+   float: right;
+   margin: 0; padding: 0;
+}
+
+
+#user-subnav, #user-subnav li
+{
+	margin: 0; padding: 0; list-style: none;
+}
+
+#user-subnav
+{
+	border-bottom: 1px #89b9ce solid;
+	overflow: auto;
+	margin: 0 0 8px 0;
+}
+
+#user-subnav li
+{
+   font: bold 1em arial, helvetica, sans-serif;
+   float: left;
+   padding: 2px 8px;
+   margin-right: 6px;
+}
+
+#user-subnav li.active
+{
+	background-color: #0D5270;
+}
+
+#user-subnav a
+{
+   text-decoration: none;
+   color: #0D5270;
+}
+
+#user-subnav li.active a
+{
+   color: #fff;
+   cursor: text;
+}
+
+.user-catalog th, .user-catalog td
+{
+   font: 1.0em arial, helvetica, sans-serif;
+}
+
+.user-catalog
+{
+   width: 100%;
+   margin: 8px 0;
+}
+
+.user-catalog th
+{
+   background-color: #0D5270;
+   color: #fff;
+   font: bold 1.0em arial, helvetica, sans-serif;
+   padding: 4px 2px;
+   color: #cecece;
+}
+
+.user-catalog th a
+{
+	color: #89b9ce;
+}
+
+.user-catalog .set-navigation td
+{
+	text-align: center;
+	color: #333;
+	background-color: #dfdfdf;
+	border-top: 1px #ccc solid;
+}
+
+.user-catalog tbody td
+{
+	border-bottom: 1px #dfdfdf solid;
+}
+
+.user-catalog tbody tr:hover td
+{
+	background-color: #ffffdf;
+}
+
+.user-catalog .set-navigation span.off
+{
+	color: #999;
+}
+
+.user-catalog td
+{
+	padding: 7px;
+}
+
+.user-catalog .empty td
+{
+	text-align: center;
+}
+
+#footer{
+text-align: center;
+margin-top: 80px;
+margin-bottom: 20px;
+}
+
+#basic-search-form {
+    position: absolute;
+    float: right;
+    right: 35px;
+    top: 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+#basic-search-form .button {
+    -moz-background-clip: border;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-background-clip: border;
+    -moz-background-inline-policy: continuous;
+    -moz-background-origin: padding;
+    padding: .25em 1em;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.1em;
+    overflow: visible;
+    padding: 3px;
+    position: relative;
+    text-align: center;
+    text-decoration: none !important;
+    background: #DFEFFC url(/zend/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png) repeat-x scroll 50% 50%;
+    border: 1px solid #C5DBEC;
+    color: #2E6E9E;
+    font-weight: bold;
+    font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+    font-size: 1em;
+}
+
+p#login {
+    text-align: right;
+    margin-right: 30px;
+    padding-top: 10px;
+}
+
+p#login a, p#login a:visited {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/*
+	CLASSES ADDED BY RUSSELL 
+*/
+
+label, td.label {
+    padding-right: 20px;
+    font-weight1: bold;
+    font-size1: 1.1em;
+    width: 150px;
+}
+
+.form-error
+{
+    display: block;
+    background-color: #FFFFCC;
+    border: 1px #efefcc solid;
+    border-width: 1px 0;
+    padding: 4px 0;
+    margin: 4px 0;
+}
+
+.required:after{
+	content:' * ';
+	color: red;
+}  

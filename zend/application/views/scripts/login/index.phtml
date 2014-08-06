@@ -1,0 +1,15 @@
+<?php 
+
+    $url_register = $this->url(array('module'=> 'profile', 'controller'=>'index', 'action'=>'register'), null, false);
+    $url_reset = $this->url(array('module'=> 'profile', 'controller'=>'index', 'action'=>'reset-password'), null, false);
+
+?>
+<div id="page-content">
+<h1>Log In</h1>
+<?php  echo $this->form; ?>
+<br/>
+<div>
+    <p>Don't have an account?&nbsp; <a href="<?php echo $url_register; ?>">Sign Up</a>.<br/>
+    Forgotten your password? You can <a href="<?php echo $url_reset; ?>">reset it</a>.</p>
+</div>
+</div>

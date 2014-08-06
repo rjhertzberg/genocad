@@ -1,0 +1,149 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <?php 
+        echo $this->headTitle();
+        //echo $this->jQuery()->setVersion('1.4.2')->enable()->uiEnable()->setUiVersion('1.8.4');
+        echo $this->jQuery()
+                  ->setLocalPath('/js/jquery.min.js')
+                  ->setUiLocalPath('/js/jquery-ui.min.js')
+                  ->enable()
+                  ->uiEnable();
+
+        echo $this->headScript()
+                  ->appendFile('/js/genocad.js');
+        echo $this->headLink()
+                  ->appendStylesheet('/css/design.css')
+                  ->appendStylesheet('/css/redmond/jquery-ui-1.8.4.custom.css')
+                  ->appendStylesheet('/css/parts_list.css')
+                  ->appendStylesheet('/template/style.css');
+     ?>
+
+    <script>
+    	var browser = navigator.appName;
+    	var b_version = navigator.appVersion;
+    	var version = parseFloat(b_version.split("MSIE")[1]);
+    	
+        $(document).ready(function() {
+           
+            $("#close-resolution").click(function(){ $("#resolution").hide(); });
+            // TODO: Need to add cookie check and cookie set on hide... 
+            if ((screen.width < 1024)) {
+                $("#resolution").show();
+            } else {
+            	$("#resolution").hide();
+            }
+
+            $("#close-compatibility").click(function(){ $("#compatibility").hide(); });
+            if ((browser == "Microsoft Internet Explorer") && (version < 8)) {
+                $("#compatibility").show();
+            } else {
+            	$("#compatibility").hide();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div style="display: none; height: 0px;" id="help"></div>
+    <div id="wrapper">
+        <div id="bg"> 
+            <div id="header"></div>  
+            <div id="page"> 
+                <div id="container"> 
+                    <!-- banner -->  
+                    <div id="banner" style="position: relative;">
+                        <div style="width: 450px; float: left;">
+                            <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'index'), null, true); ?>"><img id="logo" src="/template/images/genocad_logo.png"/></a>
+                            <br/><span style="padding-left: 100px; color: #7C0040; font-weight: bold;">CAD Software for Synthetic Biology <?php echo Zend_Registry::get('config')->website->version; ?></span>
+                        </div>
+                        <div id="login">
+                        
+                        <?php 
+                            $link = new Application_View_Helper_ProfileLink(); 
+                            echo $link->profileLink();
+                        ?>
+                        </div>
+                        
+                    </div> 
+                    <div class="clear" style="height:0px"></div>
+                    <!-- end banner -->  
+                    <!-- horizontal navigation -->  
+                    <div id="navigation"> 
+                        <?php 
+                            $link = new Application_View_Helper_Navigation(); 
+                            echo $link->navigation();
+                        ?>
+                    </div>
+                    <div class="clear" style="height:0px;"></div>
+                    <div class="shadow">&nbsp;</div>  
+                    <!-- end horizontal navigation -->  
+                    <!--  content -->  
+                    <div id="content"> 
+                        <div id="resolution" class="ui-state-highlight" style="display: none;padding: 5px; font-size: 1.2em; text-align: center;">GenoCAD is best viewed at a screen resolution of at least 1024x768.<a id="close-resolution" href="#"><span style="float: right; margin-right: 0.3em;" class="ui-icon ui-icon-circle-close"></span></a></div>
+                        <div id="compatibility" class="ui-state-highlight" style="display: none;padding: 5px; font-size: 1.2em; text-align: center;">GenoCAD is compatible with Internet Explorer 8.0 or greater; if you are using Internet Explorer 8.0 or later, make sure you are not using Compatibility View (Tools menu).<a id="close-compatibility" href="#"><span style="float: right; margin-right: 0.3em;" class="ui-icon ui-icon-circle-close"></span></a></div>
+                        <div class="clear" style="height:0px;"></div> 
+                        <?php echo $this->layout()->content; ?>
+                    </div>
+                <!-- end content --> 
+                </div>  
+            <!-- end container --> 
+            </div>
+            <div id="footerWrapper">
+                <div id="footer" style="padding: 5px; position: relative;">
+                    <div style="float: left; padding-left: 20px; text-align: left; width: 200px;">
+                        <a href="http://www.vbi.vt.edu"><img src="/template/images/vbi.png" height="37" width="182"/></a>
+                    </div>
+                    <div style="float: left; padding-left: 20px;">
+                        <table align="center">
+                            <tr>
+                            	<td valign="middle" align="center">Follow Us</td>
+                            	<!-- AddThis Follow BEGIN -->
+                                <td valign="middle">
+                                <!-- AddThis Follow BEGIN -->
+								<div class="addthis_toolbox addthis_32x32_style addthis_default_style">
+									<a class="addthis_button_facebook_follow" addthis:userid="genocad"></a>
+									<a class="addthis_button_twitter_follow" addthis:userid="genocad"></a>
+									<a class="addthis_button_google_follow" addthis:userid="u/0/b/100321230402660441049/100321230402660441049/posts/p/pub"></a>
+								</div>
+								<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5067320038a603f0"></script>
+								<!-- AddThis Follow END -->
+                                </td>
+                                <td valign="middle" align="center"><i>or</i></td>
+                                <td valign="middle"><a href="https://sourceforge.net/projects/genocad/?source=directory" target="_blank"><img src="/images/networkicons/SFDownloadicon-sm.png" alt="Download GenoCAD from SourceForge" /></a></td>
+                            </tr>
+                        </table>
+                        <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5067320038a603f0"></script>
+						<!-- AddThis Follow END -->
+                    </div>
+                    <div style="float: right; padding-top: 10px;  padding-right: 20px;">
+                        <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'privacy'), null, true); ?>">Privacy Policy</a> |
+                        <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'terms'), null, true); ?>">Terms of Use</a> |
+                        <a href="http://www.openhelix.com/cgi/tutorialInfo.cgi?id=126" target="Tutorial">Tutorial</a> |  
+                        <!-- // MAILCHIMP SUBSCRIBE CODE \\ -->
+							<a href="http://eepurl.com/ymImb" target="_blank">Mailing List</a> | 
+						<!-- \\ MAILCHIMP SUBSCRIBE LINK // -->
+                        <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'documents'), null, true); ?>">Documents</a> |
+                        <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'support'), null, true); ?>">Support</a>
+                    </div>
+                </div>
+
+            </div> 
+        </div> 
+    </div> 
+    <script type="text/javascript">
+     $("input:submit, button").button();
+     </script>
+    <!-- script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    	try {
+    		var pageTracker = _gat._getTracker("UA-2515870-1");
+    	    pageTracker._setLocalRemoteServerMode();
+    	    pageTracker._trackPageview();
+    	} catch(err) {}
+    </script -->
+</body>
+</html>

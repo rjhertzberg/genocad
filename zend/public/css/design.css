@@ -1,0 +1,226 @@
+@charset "UTF-8";
+
+#controlframe
+{
+  border-width: 1px 0;
+  margin: 0 11px 0 14px;
+  overflow: hidden;
+  background: #fff;
+  min-height: 540px;
+  height: auto !important;
+  height: 540px;
+}
+
+#historycontainer
+{
+   float: left;
+   width: 75px;
+   padding: 10px;
+}
+
+#sequencecontainer
+{
+   padding: 0; margin: 0;
+   margin: 10px 1px 20px 115px;
+}
+
+#controlframe h2, #design-title
+{
+   color: #0d5270;
+   font: bold 18px verdana, arial, helvetica, sans-serif;
+}
+
+#historyheader h2
+{
+   font-size: 14px;
+}
+
+#historyheader, #sequenceheader
+{
+   border-bottom: 3px #b1d9e9 solid;
+   height: 35px;
+}
+
+#sequenceheader h2
+{
+  float: left;
+}
+
+#status
+{
+   float: left;
+   padding-left: 20px;
+}
+
+#sequenceframe
+{
+	padding-top: 20px;
+	overflow: auto;
+	background-color: #fff;
+	height: 500px;
+	border-left: 1px #b1d9e9 solid;
+	border-bottom: 1px #b1d9e9 solid;
+	margin-left: -20px;
+	padding-left: 20px;     
+}
+
+div.element
+{
+   float: left;
+   overflow: hidden;
+   background-color: #fff;
+   margin: 0 1px 0 0;
+   width: 48px;
+}
+
+div.element h3
+{
+   font: bold 14px Arial, Helvetica, sans-serif;
+   text-align: center;
+   margin: 4px 0;
+}
+
+div.element h4
+{
+   font: bold 10px arial, helvetica, sans-serif;
+   color: #0d5270;
+   padding: 4px;
+   display: none;
+}
+
+div.element ul
+{
+   overflow: hidden;
+   zoom: 1;
+}
+
+div.element ul, div.element ul li
+{
+   margin: 0; padding: 0; list-style: none;
+   white-space: nowrap;
+}
+
+div.element li
+{
+   color: #797979;
+   font: 11px arial, helvetica, sans-serif;
+   zoom: 1;
+   list-style: none;
+   
+}
+
+div.element li a
+{
+   display: block;
+   padding: 4px 5px 5px 14px;
+   color: #797979;
+   background: transparent url(../images/li-inactive.gif) 2px 6px no-repeat;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+div.element li a:hover
+{
+   display: block;
+   padding: 4px 5px 5px 14px;
+   background: #b1d9e9 url(../images/li-active.gif) 2px 6px no-repeat;
+   color: #185b78;
+}
+
+
+div.rules{
+	background:#EEEEEE;
+}
+div.rules,
+div.parts,
+div.part
+{
+   border: 1px #ddd solid;
+   margin: 2px 0; 
+   overflow: hidden;
+   white-space: nowrap;
+}
+
+div.part
+{   
+   cursor: pointer;
+   background: #fff url(../images/li-check.gif) 2px 6px no-repeat;
+   font: bold 11px helvetica, sans-serif;
+   padding: 4px 5px 5px 14px;
+   color: #185b78;
+}
+
+div.part:hover, li.show_more
+{
+   background: #b1d9e9 url(../images/li-active.gif) 2px 6px no-repeat;
+}
+
+div.no-parts:hover
+{
+   background: #fff url(../images/li-check.gif) 2px 6px no-repeat;
+   cursor: default;
+}
+
+div.detail
+{
+   text-align: center;
+}
+
+div.detail img
+{
+  /* border: 1px #ddd solid; */
+  /* padding: 21px; */
+  background-color: #fff;
+  margin: 0px;
+}
+
+/********* History styles **************/
+
+#historywrapper
+{
+   overflow: auto;
+   padding: 1em 0;
+  min-height: 527px;
+  height: auto !important;
+  height: 527px;      
+}
+
+#historycontainer ul, ul li
+{
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+#history
+{
+   padding: 10px 0;
+}
+
+
+#historycontainer ul.history-list-item
+{
+   overflow: auto;
+   padding-left: 0em;
+   cursor: pointer;
+}
+
+#historycontainer ul.history-list-item li
+{
+   float: left;
+   width: 4.5em;
+   color: #00273a;
+   background-color: #b1d9e9;
+   margin: 1px;
+   text-align: center;
+   padding: 2px 2px 1px 2px;
+   font: bold 9px verdana, arial, helvetica, sans-serif;
+}
+
+#historycontainer ul.history-list-item:hover li,
+#historycontainer ul.current li
+{
+   background-color: #0d5270;
+   color: #fff;
+}
+

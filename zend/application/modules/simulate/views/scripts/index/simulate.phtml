@@ -1,0 +1,95 @@
+<script>
+
+    /**
+     * Calculates the number of intervals based on the duration divided by the 
+     * interval time and sets the value in the intervals input text box.
+     * 
+     */
+    function setIntervals() {
+        var max_intervals = <?php echo $this->max_intervals ?>;
+        var duration = $('#duration').val();
+        var int_time = $('#int_time').val();
+        var intervals = duration / int_time;
+
+        if (!isNaN(intervals) && isFinite(intervals)) {
+            $("#intervals").val(intervals);
+            if ((intervals > max_intervals) || (intervals < 1))  {
+                $("#errors").show();
+                $('#btn_run').button("disable");
+            } else {
+                $('#btn_run').button("enable");
+                $("#errors").hide();
+            }
+        } else {
+            $("#intervals").val("");
+            $('#btn_run').button("disable");
+        }
+        
+    }
+
+    $(document).ready(function() {
+    	$('#btn_run').button("disable").click(function() { runSimulation(<?php  echo $this->design->design_id ?> ); });
+        $('#btn_start_new').button();
+        $('#btn_download').button();
+
+        $('#duration').keyup(function() {setIntervals(); });
+        $('#duration').ForceNumericOnly();
+        $('#int_time').keyup(function() {setIntervals(); });
+        $('#int_time').ForceNumericOnly();
+
+    });
+
+</script>
+<style>
+    .ui-multiselect-checkboxes label {
+        width: 255px;
+    }
+    #parameters input {
+        margin-right: 25px;
+    }
+</style>
+
+<div id="page-content">
+    <div style="height: 50px;">
+        <h1 style="float: left; padding-right: 10px;">Simulate Design - <?php echo $this->design->name; ?></h1>
+        <div style="float: right">
+            <a id="btn_start_new" href="<?php echo $this->url(array('module'=>'simulate', 'action'=>'index'), null, true); ?>">Back to Design List</a>
+        </div>
+    </div>
+    <p class="ui-widget ui-state-default" style="padding: 5px;">Enter the Duration and Interval Time, then click on the Run Simulation</p>
+    <div id="parameters" class="ui-widget-content ui-corner-all ui-state-highlight" style="padding: 10px;">
+        <input type="hidden" id="design_id" value="" name="design_id">
+        <label class="optional" for="duration">Duration (in seconds):</label>
+        <input type="text" size="5" value="" id="duration" name="duration">
+        <label class="optional" for="int_time">Interval Time (in seconds):</label>
+        <input type="text" size="5" value="" id="int_time" name="int_time">
+        <label class="optional" for="intervals"># Intervals:</label>
+        <input type="text" disabled="disabled" size="5" value="" id="intervals" name="intervals">
+        <span style="float: right;">
+            <button id="btn_run" style="width: 125px; height: 25px; margin-right: 20px;">Run Simulation</button>
+            <a href="http://www.copasi.org/" target="_blank"><img src="/images/other/copasi.png" align="top" style="height: 20px;"></img></a>
+        </span>
+    </div>
+    <div style="min-height: 200px;">
+        <p id="errors" class="ui-widget-content ui-state-error" style="font-weight: bold; font-size: 1.1em; text-align: center; padding: 10px; margin-top: 5px; display: none;">
+            The Simulation Feature only supports between 1 and <?php echo $this->max_intervals ?> intervals; please adjust your Duration or Interval Length to bring the # Intervals value within this range.
+        </p>
+        <div id="simulation" style="padding: 10px; display: none;">
+            <h1>Simulation Results</h1>
+            <div style="height: 40px;">
+                <div style="float: left; padding-top: 0px;">
+                    <h3 style="padding: 5px; border: 0px; background: none;" class="ui-state-active">Show Data Series</h3>
+                </div>
+                <div id="series-choices" style="float: left; padding-left: 20px; width: 300px;"></div>
+                <div style="float: right">
+                    <a id="btn_download" href="<?php echo $this->url(array('module'=>'simulate', 'action'=>'download', 'type'=>'report'), null, true); ?>">Download Results</a>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+            <div class="ui-widget-content ui-corner-all" style="padding: 10px;">
+                <div id="chart" style="padding: 10px; height: 500px;" ></div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</div>

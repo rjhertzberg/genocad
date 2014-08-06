@@ -1,0 +1,235 @@
+<div id="page-content">
+    <div style="height: 35px; margin-bottom: 10px;">
+        <h1 style="float: left; padding-right: 10px; width: 225px; ">Manage Grammar</h1>
+        <div style="float: left; width: 300px; margin-top: 2px;">
+            <select name="grammar-list" id="grammar-list">
+                <?php
+                foreach ($this->grammars as $grammar) {
+                    printf('<option value="%s" %s>%s</option>', $grammar["key"], ($grammar["key"] == $this->grammar->grammar_id ? 'selected="selected"' : ''), $grammar["value"]);
+                }?>
+            </select>
+        </div>
+        <div style="float: right">
+            <a href="/grammar/index/new/id/<?php echo $this->grammar->grammar_id; ?>" id="new-grammar" style="width: 150px">Add / Import Grammar</a>
+        </div>
+    </div>
+    <?php  if ($this->grammar->user_id == 0) {?>
+    <div class="ui-corner-all" style="font-weight: bold; padding: 5px; text-align: center; border: 1px solid #FAD42E; background-color: #FFFFCC">This is a public grammar, therefore it is not editable.</div>
+    <?php } ?>
+    <div id="grammar-wrapper">
+    	<?php if ($this->grammar->isAttributeGrammar()) { ?>
+    		<input type="hidden" id="is_attribute" value="1">
+    	<?php } else { ?>
+    		<input type="hidden" id="is_attribute" value="0">
+    	<?php } ?>
+    	<?php if ($this->grammar->hasLibraries() == 0) {?>
+    		<input type="hidden" id="has_libraries" value="0">
+    	<?php } else { ?>
+    		<input type="hidden" id="has_libraries" value="1">
+    	<?php } ?>	
+        <div id="div-grammar" style="padding: 10px; margin: 10px; overflow: hidden;" class="ui-widget-content ui-corner-all">
+            <div style="float: left; width: 700px;">
+                <table width="100%" cellspacing="2" cellpadding="3">
+                    <tr><td class="label">Name:</td><td id="grammar-name"><?php echo $this->grammar->name; ?></td></tr>
+                    <tr><td class="label">Description:</td><td id="grammar-description"><?php echo $this->grammar->description; ?></td></tr>
+                    <tr><td class="label">Starting Category:</td><td id="grammar-starting-category"><?php echo $this->grammar->getStartingCategory()->getLabel(); ?></td></tr>
+                    <tr><td class="label">Icon Set:</td><td id="grammar-icon-set"><?php echo $this->grammar->icon_set; ?></td></tr>
+                </table>
+            </div>
+            <div style="float: right; width: 80px; text-align: right;">
+                <a href="/grammar/index/export/id/<?php echo $this->grammar->grammar_id; ?>" id="export-grammar" style="width: 75px;">Export</a>  
+                <!-- button id="export-grammar" style="width: 75px;">Export</button>  -->
+                <button id="btn-parse-grammar" style="width: 75px;">Test</button>
+                <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                      <button id="attributeCode" style="width: 75px;">Code</button>
+                <?php } ?>	 
+            </div>
+            <div style="float: right; width: 80px; text-align: right;">
+                <button id="edit-grammar" style="width: 75px;">Edit</button>
+                <a href="/grammar/index/copy/id/<?php echo $this->grammar->grammar_id; ?>" id="copy-grammar" style="width: 73px;">Copy</a>
+                <button id="delete-grammar" style="width: 75px;">Delete</button>
+            </div>
+        </div>
+        <div style="height: 500px;">
+            <div style="float: left; width: 40%; margin-right: 20px; padding: 10px;">
+                <div class="heading">
+                    <h2>Categories</h2>
+                    <div class="actions">
+                        <button id="new-category">New Category</button>
+                    </div>
+                </div>
+                <div class="ui-widget-content ui-corner-all" style="padding: 10px; min-height: 500px;">
+                    <div style="padding-bottom: 10px;">
+                        <button id="open_all">Expand All</button>
+                        <button id="close_all">Collapse All</button>
+                    </div>
+                    <div id="categorytree"></div>
+                </div>
+            </div>
+            <div style="float: right; width: 55%">
+                <div style="margin-bottom: 20px; padding: 10px;">
+                    <div class="heading">
+                        <h2>Category Detail</h2>
+                        <div class="actions">
+                            <button id="delete-category" style="width: 120px;">Delete Category</button>
+                            <button id="edit-detail" style="width: 120px;">Edit Category</button>
+                            <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                            	<button id="attributes" style="width: 120px;">Attributes</button>
+                            <?php } ?>	
+                        </div>
+                    </div>
+                    <div id="msg-category" class="message ui-state-highlight ui-corner-all"></div>
+                    <div id="category-detail" class="ui-widget-content ui-corner-all">
+                        <table width="100%" cellspacing="2" cellpadding="3">
+                            <tr><td class="label">Letter:</td><td class="category-data" id="category_letter"></tr>
+                            <tr><td class="label">Name:</td><td class="category-data" id="category_description"></td></tr>
+                            <tr><td class="label" valign="top">Description:</td><td class="category-data" id="category_description_text" valign="top"><textarea id="cat_desc_text" rows="3" cols="50"></textarea></td></tr>
+                            <tr><td class="label">Genbank Qualifier:</td><td class="category-data" id="category_genbank"></td></tr>
+                            <tr><td class="label">Icon:</td><td class="category-data" id="category_icon"></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="msg-rules" class="message ui-state-highlight ui-corner-all"></div>
+                <div style="margin-bottom: 20px; padding: 10px;">
+                    <div class="heading">
+                        <h2>Category Rules</h2>
+                        <div class="actions">
+                            <button id="btn-add-rule">Add Rule</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 20px; padding: 5px;" class="ui-widget-content ui-corner-all">              
+                            <div class="heading">
+                                <h3>Child Rules</h3>
+                            </div>
+                            <div>
+                                <table cellpadding="0" cellspacing="0" class="rules" id="child-rules">
+                                    <tr>
+                                        <th width="200px;">Code</th>
+                                        <th width="360px;">Rule</th>
+                                        <th align="center">Edit</th>
+                                        <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                      						<th align="center">Semantic</th>
+                						<?php } ?>	
+                                        <th align="center">Delete</th>
+                                    </tr>
+                                    <tr class="no-rules" style="background-color: #FFFFCC">
+                                    <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                      						<td colspan="5">
+        								<?php } else { ?>  
+        							        <td colspan="4">   						
+                						<?php } ?>
+                					There are no child rules for the selected category.</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="padding: 5px;" class="ui-widget-content ui-corner-all">
+                            <div class="heading">
+                                <h3>Parent Rules</h3>
+                            </div>
+                            <div>
+                                <table cellpadding="0" cellspacing="0" class="rules" id="parent-rules">
+                                    <tr>
+                                        <th width="200px;">Code</th>
+                                        <th width="360px;">Rule</th>
+                                        <th align="center">Edit</th>
+                                        <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                      						<th align="center">Semantic</th>
+                						<?php } ?>
+                                        <th align="center">Delete</th>
+                                    </tr>
+                                    <tr class="no-rules" style="background-color: #FFFFCC">
+                                    <?php if ($this->grammar->isAttributeGrammar()) { ?>
+                      						<td colspan="5">
+        								<?php } else { ?>  
+        							        <td colspan="4">   						
+                						<?php } ?>
+                                    There are no parent rules for the selected category.</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="rule-editor" style="display: none">
+        <div style="float: left; margin-right: 25px;">
+            <h2>Available Categories:</h2>
+            <p>Use the list of categories below to formulate a rule</p>
+            <div id="category-available">
+            </div>
+        </div>
+        <div style="height: 400px; width: 350px; float: left;">
+            <form id="edit-rule">
+                <input type="hidden" name="grammar_id" id="rule_grammar_id" value="<?php echo $this->grammar->grammar_id; ?>"/>
+                <input type="hidden" name="rule_id" id="rule_id" value=""/>
+                <input type="hidden" name="transform" id="transform" value=""/>
+                <input type="hidden" name="category_id" id="category_id" value=""/>
+                <div id="div-code" style="width: 100%; height: 75px; margin-bottom: 25px;">
+                    <h2>Rule:</h2>
+                    <p><label class="required">Code:</label>&nbsp;<input type="text" size="20" name="code" id="rule_code"/></p>
+                    <p class="instructions">A short description of the rule used as a reference in the application</p>
+                </div>
+                <div id="div-start" style="width: 100%; height: 100px; margin-bottom: 25px;">
+                    <h2>Transfer From Category:</h2>
+                    <p class="instructions">Drop a category from the "Available Categories" into the box below</p>
+                    <div id="category-start" class="category-sortable removable"></div>
+                </div>
+                <div id="div-transform" style="width: 100%;">
+                    <h2>Transform To Categories:</h2>
+                    <p class="instructions">Drop a category, or series of categories, from the "Available Categories" into the box below</p>
+                    <div style="overflow-x: hidden; overflow-y: scroll; height: 175px;">
+                        <div id="category-transform" class="category-sortable removable"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="div-parser" style="display: none">
+        <div style="position: relative;margin-top: 3px; ">
+            <div id="design-title">
+                Test: <?php echo $this->grammar->name; ?>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+        <div id="historycontainer">
+            <div id="historywrapper" style="min-height: 300px;">
+                <ul id="history"></ul>
+            </div>
+        </div>
+        <div id="sequencecontainer">
+            <div id="sequenceframe" style="height: 315px; padding-top: 5px;">
+                <div id="thecontainer"></div>
+            </div>
+        </div>
+    </div>
+    <div id="image-browser" style="display: none"></div>
+    <div id="dialog-grammar" style="display: none"></div>
+    <div id="dialog-category" style="display: none"></div>
+    <div id="dialog-attributes" style="display: none"></div>
+    <div id="dialog-attribute" style="display: none"></div>
+    <div id="loading" style="display: none;" class="ui-content ui-state-error">
+        <img style="vertical-align: middle" src="/images/loading.gif"/> Loading...
+    </div>
+</div>
+<script type="text/javascript">
+
+    gGrammarID = <?php echo $this->grammar->grammar_id; ?>;
+    gIsEditable = <?php echo ($this->grammar->isEditable() ? "true" : "false"); ?>;
+    gIsDeletable = <?php echo ($this->grammar->isDeletable() ? "true" : "false"); ?>;
+
+    $('select#grammar-list')
+        .selectmenu({"width" : "250px"})
+        .change(function() {location.href = "/grammar/index/index/id/" + $(this).val(); });
+
+    $("#new-grammar, #copy-grammar, #export-grammar").button();
+
+    $(document).ready(function() {
+
+        initGrammarEditor();
+
+    });
+
+</script>

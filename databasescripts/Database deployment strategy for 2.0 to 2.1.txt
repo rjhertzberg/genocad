@@ -1,0 +1,10 @@
+1. Run from_v.2.0_to_v.2.1_script.
+
+2. Move migrate_rules.php to zend/public folder and run through browser.  Delete when complete.
+
+3. Run merge_category_icons.
+
+4. Manually clean up categories to give them more consistent names.
+
+5. Run addSpecialCaseParts.php to add the [, ], {, }, and () parts.
+

@@ -1,0 +1,43 @@
+<?php 
+
+if ($this->show_form) {
+    echo $this->form;
+} else {
+    
+?>
+  
+<div id="page-content">  
+<?php
+print "<h1>Import complete.</h1><br />";
+
+print "Number of parts successfully imported into library ".$this->library->name.": ".$this->messages["partsCount"].".<br /> Errors (if any) are listed below.<br /><br />";
+
+// Output errors
+if (strlen($this->messages["errorMissingReqQueue"]) > 0) {
+    // Missing required attributes
+    print "The following parts could not be added because they were missing part name, categories, or sequence: <br />".str_replace(PHP_EOL, "<br />", $this->messages["errorMissingReqQueue"])."<br />";
+}
+
+if (strlen($this->messages["categoryMissingQueue"]) > 0) {
+    // None of the categories could be mapped to valid categories for the selected grammar
+    print "The following parts could not be added because none of the specified categories are valid for the selected grammar: <br />".str_replace(PHP_EOL, "<br />", $this->messages["categoryMissingQueue"])."<br />";
+}
+
+if (strlen($this->messages["categoryInvalidQueue"]) > 0) {
+    // The following listed categories were invalid, but may not have prevented the part from being added
+    print "The following categories were invalid for the selected grammar; listed part may have been loaded, but not for the listed categories: <br />".str_replace(PHP_EOL, "<br />", $this->messages["categoryInvalidQueue"])."<br />";
+} 
+
+if (strlen($this->messages["duplicatePartsErrorQueue"]) > 0) {
+    // The listed parts were not listed because the sequences already existed for parts within the library
+    print "The following parts were not loaded because parts already existed within the selected library with the same sequence: <br />".str_replace(PHP_EOL, "<br />", $this->messages["duplicatePartsErrorQueue"])."<br />";
+}
+
+?>
+<a id="btn_close" href="<?php echo $this->url(array('module'=>'parts', 'tab'=>'myparts'), null, true); ?>">Close</a>
+</div>
+<?php } ?>
+
+<script charset="utf-8" type="text/javascript">
+    $('#btn_close').button();
+</script>

@@ -1,0 +1,256 @@
+<style>
+    #actions-mylib td.label {
+        width: 100px;
+    }
+</style>
+<div id="wrapper" style="position: relative; display: inline;">
+    <div style="display: none; height: 0px;" id="dialog"></div>
+	<div style="float: left; padding-right: 15px; padding: 10px;">
+		<div id="tabs" style="width: 335px; overflow: auto;">
+			<ul>
+				<li><a id="partsbrowser" href="#browser-tab">Grammars</a></li>
+				<li><a id="mylibraries" href="#library-tab">Libraries</a></li>
+				<li><a id="myparts" href="#myparts-tab">My Parts</a></li>
+				<li><a id="mypartslist" href="#partslist-tab">My Cart (<span id="partslist_cnt">0</span>)</a></li>
+			</ul>
+			<div id="browser-tab">
+    			<div>
+    				<div style="padding-bottom: 10px;">
+  					    <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'new', 'module'=>'grammar')); ?>" id="add_grammar">Add / Import Grammar</a>
+    				</div>
+    				<div style="padding-bottom: 10px;" id="public_tree"></div>
+    			</div>
+			</div>
+			<div id="library-tab">
+				<div>
+					<div style="padding-bottom: 5px;">
+						<button id="mylib_open_all">Expand All</button>
+						<button id="mylib_close_all">Collapse All</button>
+						<div style="float: right">
+                        <?php if (Genocad_Application::isLoggedIn()) {?>
+                            <button id="lib_new">New Library</button>
+                        <?php } ?>
+						</div>
+					</div>
+                    <?php if (Genocad_Application::isLoggedIn()) {?>
+					<div class="ui-content ui-state-default ui-corner-none" style="padding-bottom: 3px; margin-bottom: 10px;">
+					   <label><input id="check_user_libraries_only" type="checkbox" style="position: relative; top: 2px;"/> Only Display My Libraries</label>
+					</div>
+                    <?php } ?>
+                    <div style="padding-bottom: 10px; " class="library_tree" id="library_tree"></div>
+				</div>
+			</div>
+            <div id="myparts-tab">
+                <div>
+                    <div style="padding-bottom: 10px;">
+                        <button id="btn_myparts_open_all">Expand All</button>
+                        <button id="btn_myparts_close_all">Collapse All</button>
+                        <div style="float: right">
+                          <button id="btn_myparts_new">New Part</button>
+                        </div>
+                    </div>
+                    <div id="myparts_tree"></div>
+                </div>
+            </div>
+			<div id="partslist-tab">
+				<div>
+					<div style="padding-bottom: 10px;">
+						<button id="btn_plist_open_all">Expand All</button>
+						<button id="btn_plist_close_all">Collapse All</button>
+						<div style="float: right">
+						  <button id="btn_plist_empty">Empty List</button>
+						</div>
+					</div>
+					<div id="partslist_tree"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="rightcol" class="" style="margin-left: 0px; padding: 5px; width: 595px; float: left;">
+	   <div id="form_messages" class="ui-state-highlight ui-corner-all" style="padding: 5px; margin-bottom: 5px; display: none;"></div>
+       <div id="panel_grammar" style="padding-top: 10px; display: none;">
+            <div style="height: 35px;">
+                <h2 style="float: left; padding-right: 10px;">Grammar Summary</h2>
+                <div style="float: right">
+                    <a href="#" id="manage-grammar" >Manage Grammar</a>
+                </div>
+            </div>
+            <div id="div-grammar" style="min-height: 175px; overflow: hidden; padding: 10px;" class="ui-widget-content ui-corner-all">
+                <div style="float: left;">
+                    <table width="100%" cellspacing="2" cellpadding="3">
+                        <tr><td class="label">Name:</td><td id="grammar_name"></td></tr>
+                        <tr><td class="label">Description:</td><td id="grammar_description"></td></tr>
+                        <tr><td class="label">Icon Set:</td><td id="grammar_icon_set"></td></tr>
+                        <tr><td class="label">Supports Attributes?:</td><td id="grammar_attributes"></td></tr>
+                        <tr><td class="label"># Categories:</td><td id="categories_cnt"></td></tr>
+                        <tr><td class="label"># Libraries:</td><td id="libraries_cnt"></td></tr>
+                        <tr><td class="label"># Parts:</td><td id="parts_cnt"></td></tr>
+                        <tr><td class="label"># Rules:</td><td id="rules_cnt"></td></tr>
+                        <tr><td class="label"># Designs:</td><td id="designs_cnt"></td></tr>
+                    </table>
+                </div>
+            </div>
+       </div>	   
+	   <div id="panel_parts_public" style="padding-top: 10px; display: none;">
+	        <div id="actions-public">
+                <h2>Public Libraries</h2>
+                <button id="btn_public_add_parts">Add Selected to My Cart</button>
+            </div>
+            <form id="form-public"  onSubmit="return false;">
+                 <div id="parts_list_wrapper" class="dataTables_wrapper">
+                    <table id="dt_public" class="ui-widget-content" width="100%" cellpadding="3" cellspacing="2" style="font-size: 11px"></table>
+                 </div>
+            </form>
+	   </div>
+	   <div id="panel_parts_mylib" style="padding-top: 10px; display: none;">
+	        <div id="div-libraries">
+	        <div style="height: 35px;">
+                <h2 style="float: left; padding-right: 10px;">Libraries</h2>
+                <div style="float: right">
+                	<?php if (!Genocad_Application::isLoggedIn()) { ?>
+                		<button id="btn_library_add" style="margin-bottom: 5px; width: 170px;" disabled>Add Selected to My Cart</button>
+                	<?php } else { ?>	
+                    	<button id="btn_library_add" style="margin-bottom: 5px; width: 170px;">Add Selected to My Cart</button>
+                    <?php } ?>	
+                    <button id="btn_library_copy" style="margin-bottom: 5px; width: 120px;">Copy Library</button>
+                </div>
+            </div>
+            <div id="actions-mylib" class="ui-widget-content ui-corner-all"  style="margin-bottom: 5px; padding: 5px;">
+                <table width="100%" cellspacing="2" cellpadding="3">
+                    <tr><td class="label">Library Name:</td><td id="lib_name"></td></tr>
+                    <tr><td class="label">Description:</td><td id="lib_descr"></td></tr>
+                </table>
+                <div id="library-actions" style="display: none; height 35px; margin-top: 5px; text-align: center; padding-top: 5px; background-color: #ffffcc; border-top: 1px solid #A6C9E2;">
+                   <button class="libedit" id="btn_library_edit" style="width: 120px;">Edit Library</button>
+                   <button class="libedit" id="btn_library_delete" style="width: 120px;">Delete Library</button>
+                   <button class="libedit" id="btn_library_remove" style="width: 200px;">Remove Selected from Library</button>
+                   <button class="libedit" id="btn_library_part" style="width: 120px;">Add New Part</button>
+                </div>
+            </div>
+            </div>
+            <div id="actions-orphaned" class="ui-corner-all"  style="margin-bottom: 5px; padding: 0px;">
+                <div style="height: 35px;">
+                    <h2 style="float: left; padding-right: 10px;">Orphaned Parts</h2>
+                    <div style="float: right">
+                        <button id="btn_orphaned_add" style="margin-bottom: 5px; width: 170px;">Add Selected to My Cart</button>
+                    </div>
+                </div>
+             </div>
+            <form id="form-mylib"  onSubmit="return false;">
+                 <div id="parts_list_wrapper" class="dataTables_wrapper">
+                    <table id="dt_mylib" class="ui-widget-content" width="100%" cellpadding="3" cellspacing="2" style="font-size: 11px"></table>
+                 </div>
+            </form>
+	   </div>
+       <div id="panel_parts_myparts" style="padding-top: 10px; display: none;">
+            <div id="actions-myparts" class="" style="margin-bottom: 5px; padding: 0px;">
+                <div style="height: 35px;">
+                    <h2 style="float: left; padding-right: 10px;">My Parts</h2>
+                    <div style="float: right">
+                        <button id="btn_myparts_add_parts" style="margin-bottom: 5px; width: 170px;">Add Selected to My Cart</button>
+                    </div>
+                </div>
+                <form id="form-myparts"  onSubmit="return false;">
+                    <div style="text-align: center">
+                      <button id="btn_myparts_import" style="margin-bottom: 5px; width: 150px;">Import Parts</button>
+                      <button id="btn_myparts_fasta" style="margin-bottom: 5px; width: 200px;">Export Selected to FASTA</button>
+                      <button id="btn_myparts_tabdelim" style="margin-bottom: 5px; width: 225px;">Export Selected to Tab Delimited</button>
+                    </div>
+                    <div id="parts_list_wrapper" class="dataTables_wrapper">
+                        <table id="dt_myparts" class="ui-widget-content" width="100%" cellpadding="3" cellspacing="2" style="font-size: 11px"></table>
+                     </div>
+                </form>
+            </div>
+       </div>
+	   <div id="panel_parts_plist" style="padding-top: 10px; display: none;">
+            <div id="actions-plist" class=""  style="margin-bottom: 5px; padding: 0px;">
+                <div style="height: 35px;">
+                    <h2>My Cart</h2>
+                    <?php
+                    if (!Genocad_Application::isLoggedIn()) {
+                        printf('<h3>Please <a href="%s">login</a> in order to save your cart.</h3>', $this->url(array('controller'=>'login'), null, true));
+                    } 
+                    ?>
+                </div>
+                <div>
+                    <form id="form-plist"  onSubmit="return false;">
+                         <div style="float: left;">
+                            <div id="actions-plist-lib">
+                                <div style="float: left; width: 270px;">
+                                <select style="width: 250px;" name="library_id" id="selectLibrary">
+                                    <option value="-1"> - Select Library - </option>
+                                </select>
+                                </div>
+                                <div style="float: right;"><button id="btn_plist_newlib">New Library</button></div>
+                                <div style="clear: both;">
+                                    <button style="margin-top: 10px;" id="btn_plist_merge">Copy to Library</button>
+                                    <input name="remove" type="checkbox" value="1"/>Remove from My Cart After Copy?
+                                </div>
+                            </div>
+
+                        </div>
+                        <div style="float: right;">
+                        	<div style="float: right;">
+                            	<button id="btn_plist_remove" style="width: 150px;">Remove Selected</button>
+                            </div>
+                            <div style="clear: both;">
+                            	<b>Export to:</b>
+                				<button style="margin-top: 10px;" id="btn_export_fasta">FASTA</button>
+                				<button style="margin-top: 10px;" id="btn_export_tab">Tab-Delimited</button>
+            				</div>
+                        </div>
+                        <div id="parts_list_wrapper" class="dataTables_wrapper">
+                            <table id="dt_plist" class="ui-widget-content" width="100%" cellpadding="3" cellspacing="2" style="font-size: 11px"></table>
+                         </div>
+                    </form>
+                </div>
+            </div>
+	   </div>
+	</div>
+    <div id="loading" style="position: absolute; display: none;">
+        <div class="ui-content ui-state-highlight ui-corner-all" style="padding: 5px; width: 100px; text-align: center"><img style="vertical-align: middle" src="/images/loading.gif"/> Loading...</div>
+    </div>
+</div>
+<script charset="utf-8" type="text/javascript">
+    sBaseUrl = "<?php echo $this->url(array('controller'=>'parts', 'action'=>'datatable', 'module'=>'api')); ?>";
+    var gLibId;
+    var bAuthenticated = <?php echo (Genocad_Application::isLoggedIn() ? 'true' : 'false'); ?>;
+    var $loading = $('<div style="position: absolute; top: 100px; left: 275px;"><img src="/images/loading.gif" alt="loading"></div>');
+
+    $("#tabs").tabs({
+        "disabled":[3],
+        select: function(event, ui) {
+            switchTab(ui.index);
+        }
+    });
+    
+    // Bind functions to the Click method of all the buttons on the various forms
+    $("button, a#manage-grammar").button();
+    $("a#manage-grammar").button("disable");
+    
+    $('a#add_grammar').button();
+
+    $('div#actions-plist-lib #selectLibrary').selectmenu();
+
+    // call the switchTab function to effectively click the first tab in order
+    // to hide the other tab panels from view
+    switchTab(1);
+        
+    $(document).ready(function() {
+        <?php
+            if ($this->selected_tab == 4) {
+                echo '$("#check_user_libraries_only:checkbox").attr("checked", true);';
+                $this->selected_tab = 1;
+            }
+        ?>
+        initPartsBrowser();
+        <?php
+            if (!Genocad_Application::isLoggedIn()) {
+                echo '$("#actions-plist-lib").hide();';
+            }
+            printf('$("#tabs").tabs("select", %s);', $this->selected_tab);
+        ?>
+
+    });
+
+</script>

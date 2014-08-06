@@ -1,0 +1,19 @@
+<div>
+    <label>Browse Icon Set:</label>
+    <select id="browse-icon-set" style="width: 300px;">
+        <?php foreach (Application_Model_ImageSets::getImageSets() as $set) {
+            printf('<option value="%s">%s</option>', $set, $set);
+        } ?>
+    </select>
+    <div style="padding: 5px; margin-top: 10px; border-top: 1px solid silver; overflow-y: scroll; height: 250px;">
+    <?php 
+        foreach (Application_Model_ImageSets::getImageSets() as $set) {
+            printf('<div class="div-icons" id="%s" style="display: none">', $set);
+            foreach (Application_Model_ImageSets::getImageSetImages($set) as $image) {
+                printf('<div class="detail" style="float: left; width: 100px; padding: 5px;"><img class="elementIcon" src="%s" /><h4 class="elementLetter">%s</h4></div>', $image['url'], $image['name']);
+            }
+            echo '</div>';
+        }
+    ?>
+    </div>
+</div>

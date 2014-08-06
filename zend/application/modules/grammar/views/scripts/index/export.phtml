@@ -1,0 +1,26 @@
+<div id="page-content">
+    <div style="margin-bottom: 10px; border-bottom: 2px solid #C5DBEC; height: 40px;">
+        <h1 style="float: left; padding-right: 10px;">Export Grammar (<?php echo $this->grammar->name; ?>)</h1>
+    </div>
+    <div style="float: right">
+            <a href="/grammar/index/index/id/<?php echo $this->grammar->grammar_id; ?>" id="back" style="width: 200px">Back to Grammar Editor</a>
+    </div>
+    <div style="border-top: 0px solid #C5DBEC; padding: 5px;">
+        <?php echo $this->form; ?>
+    </div>
+    <div id="image-browser" style="display: none"></div>
+</div>
+<script>
+
+    $("a#back").button();
+    
+    $("#image_set_browse")
+       .button()
+       .click(function(e) {
+            e.preventDefault();
+            loadImageBrowser("#image-browser", $("#form_grammar #icon_set").val());
+        });
+
+    //disableFormSubmit();
+
+</script>

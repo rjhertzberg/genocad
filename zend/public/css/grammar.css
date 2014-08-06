@@ -1,0 +1,118 @@
+table.rules div.element {
+    width: 24px;
+}
+table.rules {
+    width: 100%;
+}
+table.rules td, table.rules th {
+    padding: 5px;
+}
+table.rules th {
+    border-bottom: 1px solid #CECECE;
+}
+div#category-detail {
+    padding: 5px;
+}
+
+div#category-available {
+    height: 400px; 
+    width: 350px; 
+    overflow-x: hidden; 
+    overflow-y: scroll;
+    margin-right: 5px;
+}
+    
+#category-available, #category-start { 
+    list-style-type: none; 
+    float: left; 
+    padding: 5px;
+    width: 325px;
+}
+
+#category-available div, #category-start div, #category-transform div {
+    margin: 5px; 
+    padding: 5px; 
+    font-size: 1.0em; 
+    width: 300px;
+}
+#category-available div, #category-transform div {
+    cursor: move;
+}
+#category-transform {
+    overflow-x: hidden; 
+    margin-right: 5px; 
+    min-height: 165px;
+}
+
+#category-start {
+    padding: 0px;
+    height: 40px;
+    border: 1px dashed black; 
+}
+
+.category-sortable
+{
+    border: 1px dashed black; 
+    background-color: #FFFFCC;
+}
+img.category-icon {
+    vertical-align: middle;
+    height: 16px;
+    padding-right: 10px;
+    height: 16px;
+}
+img.cancel-rule {
+    vertical-align: middle;
+    cursor: pointer;
+}
+img.img-edit, img.img-delete, img.img-semantic {
+    vertical-align: middle;
+    cursor: pointer;
+}
+.ui-sortable-placeholder {
+    border: 1px dotted black; 
+    visibility: visible !important; 
+    height: 30px !important; 
+    padding: 0px;
+}
+
+.ui-sortable-placeholder * {
+    visibility: hidden;
+}
+
+div.element h3 {
+    font: bold 11px Arial,Helvetica,sans-serif;
+}
+
+div.message {
+    padding: 5px; 
+    text-align:center; 
+    display: none;
+    margin-bottom: 10px;
+}
+
+div.heading {
+    height: 35px;
+}
+
+div.heading h2 {
+    float: left;
+    padding-right: 10px;
+}
+
+div.heading div.actions {
+    float: right;
+}
+.rule-required {
+	background-color: red;
+}
+.dialogLoading {
+	text-align: center; 
+	display: none;
+	font-weight: bold;
+	padding: 10px;
+	vertical-align: center;
+}
+.dialogLoading .ui-dialog-titlebar {
+	display: none;
+}

@@ -1,0 +1,64 @@
+<h1>Models Management Module</h1>
+<h2>Overview</h2>
+<p>
+The Models Management Module allows users to view and create Synthetic Biology grammars and rules, then, in turn, to create and manage their parts and libraries; these are the building blocks that must be in place in order to design sequences.  
+The Models Management Module is made up of four sections: Grammars, Libraries, My Parts, and My Cart.
+</p>
+<h2>Grammars</h2>
+<p>The Grammars tab is the default tab when you initially load the Models Management Module.  It contains a list of the Grammars currently available in the system, divided into Public Grammars and User Grammars.
+The difference is that Public Grammars are available to all GenoCAD users and may not be edited, while the User Grammars may be used only by the logged-in user and may be edited by that user;
+another way to look at it is that User Grammars belong to the logged-in user.  From the Grammars tab, users may:<p>
+<p><B>Add/Import Grammar:</B> Clicking on the <B>Add/Import Grammar</B> button will load the Add/Import Grammar page so the user can add a new grammar or import an exported grammar file from another location or user.</p>
+<p><B>View Grammar Summary:</B> The user can view a summary of a specific grammar by clicking on the grammar name in the navigation tree.  Information like the name and description of the grammar, how many rules, libraries, categories, and parts are available
+in support of this grammar, and some additional details can be reviewed on the right.</p>
+<p><B>Manage Grammar: </B> To view more details for a specific grammar, select it from the navigation tree and click on the <B>Manage Grammar</B> button on the right side of the page.  This will load the Grammar Editor screen where
+a user may copy or export any grammar or make changes to a User Grammar.</p>
+
+<h2>Libraries</h2>
+<p>The Libraries tab contains a list of all the parts libraries available to the logged-in user (which would be only the Public libraries if the user is not logged in.) Libraries are sorted beneath their associated grammars, and user-owned libraries
+are indicated by a special icon.  To view only your own libraries, click on the <B>Only Display My Libraries</B> checkbox.<p>
+<p>To display all the parts in a given library, you can click on the library name in the left navigation bar, and the parts in that library will be displayed on the right, sorted by category.  If you only want to display the 
+parts within a specific category in that library, you can click on the "+" sign next to the library name to expand the categories below that library, and then click on the category you want.
+</p>
+<p> There are a number of options you can choose from when you first enter the Libraries tab:<p>
+<p><B>Expand All: </B>If you click on this button, all of the branches of the navigation tree (grammars and libraries) will be expanded to reveal the categories below each library.</p>
+<p><B>Collapse All: </B>This button will close all the expanded grammars and hide the underlying libraries from the navigation bar.</p>
+<p><B>New Library: </B>Click on this button to add a new library.</p>
+<p><B>Add Selected to My Cart: </B> If parts have been selected on the right side of the screen, this button will copy them to the My Cart section.  From there, they can be added to other
+libraries or exported to FASTA or Tab-delimited format.</p>
+<p><B>Copy Library: </B> Clicking this button would allow the user to make a copy of the selected library in their own workspace.  In this way, a user may modify a public library, or make a backup of one of their own existing libraries.</p>
+<p>If the selected library is a user library, then some additional options are available:</p>
+<p><B>Edit Library: </B> This button will allow the user to change the name or description of their library.</p>
+<p><B>Delete Library: </B> Users may delete their own libraries.  It should be noted that the underlying parts are not deleted, but if they do not belong to any other library, then they 
+will be added to the <B>Orphaned Parts</B> "library".</p>
+<p><B>Remove Selected from Library: </B> This will remove the selected parts from the user's library.  Again, it should be noted that this will not actually delete the parts, and if they
+are not associated with any other libraries then they will be added to the <B>Orphaned Parts</B> "library".</p>
+<p><B>Add New Part: </B> Clicking this button will allow you to add a new part to the system.  Clicking the button from the libraries tab will default the grammar and library setting for the new
+part to the selected library, but the user may change those settings.</p>
+
+<h2>My Parts</h2>
+<p>The My Parts tab allows you to view your own parts sorted by grammar rather than by library.  From here, you may add parts to your cart (as you could on the Library tab), along with some additional features specific to this section.</p>
+<p><B>Add Selected to My Cart: </B> This allows you to add selected parts to your cart so they can be added to another library.</p>
+<p><B>Import Parts: </B> This allows you to import a FASTA or Tab-delimited file of parts into one of your libraries.  Note that the import formats are the same as the export formats below.
+<p><B>Export Selected to FASTA: </B> This will allow you to export the selected parts to a FASTA file for import into another GenoCAD library or another system. The first line contains the following elements (delimited by |s): >lcl (because this is a local database); Part name; Categories, delimited by commas.</p>
+<p><B>Export Selected to Tab Delimited: </B> This will allow you to export the selected parts to a tab-delimited format for import into another GenoCAD library or into another system. The export format is Name, Categories(in a comma-delimited list), Description, then Sequence.</p>
+<p>If you want to edit a specific part, you can click on the <B>Part ID</B> of the part you wish to edit.  This will load the <B>View Part</B> page.  If the part belongs to you, there will be an <B>Edit</B> button at the bottom of the page that you can use to load the <B>Edit Part</B> page.  From the Edit Part page you can edit the part's basic information; 
+if the part is associated with an Attribute Grammar category, you will also be able to change the attribute values for this part.</p>
+
+<h2>My Cart</h2>
+<p>The process of adding parts to a library can be likened to that of selecting books to be ordered; that is, you select the parts you want to add to a library, you put them in your "cart", and at the end of the process you review your cart and "ship" the parts you want to the appropriate libraries.</p>
+<p>To add parts from your cart to a library:</p>
+<p>1. Select the grammar from the navigation bar on the left side of the screen.</p>
+<p>2. Select the target library from the dropdown list on the top of the right side of the screen. If the library does not exist, click on the <B>New Library</B> button.</p>
+<p>3. Using the checkboxes next to the parts, select the parts you want to move to the target library.</p>
+<p>4. Click on the <B>Copy to Library</B> button.</p>
+<p>There are three ways to remove parts that are no longer needed from your cart.</p>
+<p>1. When you are getting ready to click on the <B>Copy to Library</B> button, make sure that the <B>Remove from My Cart after Copy</B> checkbox is checked.</p>
+<p>2. Select the parts you wish to remove and click on the <B>Remove Selected</B> button on the right side of the screen.</p>
+<p>3. To get rid of all of the parts in your cart, click on the <B>Empty List</B> button on the left side of the screen.</p>
+<p>From My Cart, you can also export parts.  This can be handy, especially if you want to include parts from one grammar in a library under a different grammar.  To export parts:</p>
+<p>1. Select the grammar from the navigation bar on the left side of the screen.</p>
+<p>2. Using the checkboxes next to the parts on the right side of the screen, select the parts you want to export.</p>
+<p>3. Click on either the <B>FASTA</B> or <B>Tab-Delimited</B> buttons to indicate the format you would like to use when exporting the selected parts.</p>
+<p>The format for the Fasta export is as follows: the first line contains the following elements (delimited by |s): >lcl (because this is a local database); Part name; Categories, delimited by commas.  The format for the tab-delimited export is Name, Categories(in a comma-delimited list), Description, then Sequence.</p>
+

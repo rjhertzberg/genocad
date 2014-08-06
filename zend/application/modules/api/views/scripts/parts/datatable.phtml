@@ -1,0 +1,15 @@
+<?php $lastKey = sizeof($this->parts) - 1;?>
+{"aaData": [
+<?php foreach($this->parts as $key => $part) : ?>
+["<?php echo $part[0]; ?>",
+"<?php echo $part[1]; ?>",
+"<?php echo $part[2]; ?>",
+"<?php echo $part[3]; ?>",
+"<?php echo $part[4]; ?>",
+"<?php echo $part[5]; ?>",
+"<?php echo $part[6]; ?>",
+"<?php echo $this->escape($part[7]); ?>"]
+<?php if ($key != $lastKey) { echo ","; }?>
+<?php endforeach; ?>
+]
+}

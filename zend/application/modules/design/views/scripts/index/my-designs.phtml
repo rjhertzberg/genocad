@@ -1,0 +1,287 @@
+<div id="page-content">
+    <div style="height: 35px; margin-bottom: 20px; border-bottom: 0px solid; ">
+        <h1 style="float: left; padding-right: 10px;">Available Designs</h1>
+        <div style="float: right">
+            <a id="btn_start_new" href="<?php echo $this->url(array('action'=>'index')); ?>">Start New Design</a>
+        </div>
+    </div>
+    <?php if (Genocad_Application::isLoggedIn()) { ?>
+    <div id="div-my-designs" class="table">
+        <div style="height: 35px;">
+            <h2 style="float: left; padding-right: 10px;">My Designs</h2>
+            <div style="float: right; padding-left: 30px;">
+                <b>Export Selected to: </b> 
+                <button class="btn_export_fasta">FASTA</button>
+                <button class="btn_export_tab">Tab-Delimited</button>
+            </div>
+            <div style="float: right">
+                <button id="btn_delete">Delete Selected</button>
+            </div>
+        </div>
+        <form id="form-my-designs" style="margin-bottom: 30px;">
+            <table cellspacing="1" cellpadding="5" id="my-designs" style="width: 100%">
+                <tbody>
+                <?php  foreach ($this->designs as $design) {
+        
+                    $status = $design->getValidationStatus();
+
+                    printf('<tr id="%s">', $design->design_id);
+                    printf('<td align="center"><input type="checkbox" value="%s" name="design_id[]"></td>', $design->design_id);
+                    printf('<td>%s</td>', $design->name);
+                    printf('<td>%s</td>', $design->gramname);
+					printf('<td>%s</td>', $design->libname);  
+                    printf('<td align="center">%s</td>', date("m/d/Y", strtotime($design->last_modification)));
+                    printf('<td align="center"><a onclick="revalidateDesign(%s);" href="#"><img alt="%s" title="%s" src="/images/%s"></a></td>', $design->design_id, $status['title'], $status['title'], $status['image']);
+                    printf('<td align="center"><a title="%s" class="copy-design" href="%s"><img src="/images/copy.png" /></a></td>', $design->name, $this->url(array('action'=>'copy', 'design_id'=>$design->design_id)));
+                    printf('<td align="center"><a href="%s"><img src="/images/other/design_icon.png" /></a></td>', $this->url(array('action'=>'index', 'design_id'=>$design->design_id)));
+                    if ($design->description != "") {
+                    	printf('<td><span class="ui-icon ui-icon-comment" title="%s"></span></td>', $design->description);
+                    } else {
+                    	printf('<td></td>');
+                    }		
+                    echo '</tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <?php } ?>
+    <div  class="table">
+        <div id="div-public-designs" style="height: 35px;">
+            <h2 style="float: left; padding-right: 10px;">Public Designs</h2>
+            <div style="float: right; padding-left: 30px;">
+                <b>Export Selected to: </b> 
+                <button class="btn_export_fasta">FASTA</button>
+                <button class="btn_export_tab">Tab-Delimited</button>
+            </div>
+        </div>
+        <form id="form-public-designs">
+            <table cellspacing="1" cellpadding="5" id="public-designs" style="width: 100%">
+                <tbody>
+                <?php  foreach ($this->publicDesigns as $design) {
+            
+                    $status = $design->getValidationStatus();
+            
+                    printf('<tr id="%s">', $design->design_id);
+                    printf('<td align="center"><input type="checkbox" value="%s" name="design_id[]"></td>', $design->design_id);
+                    printf('<td>%s</td>', $design->name);
+                    printf('<td>%s</td>', $design->gramname);
+					printf('<td>%s</td>', $design->libname);                   
+                    printf('<td align="center">%s</td>', date("m/d/Y", strtotime($design->last_modification)));
+                    printf('<td align="center"><a onclick="revalidateDesign(%s);" href="#"><img alt="%s" title="%s" src="/images/%s"></a></td>', $design->design_id, $status['title'], $status['title'], $status['image']);
+                    if (Genocad_Application::isLoggedIn()) {
+                        printf('<td align="center"><a title="%s" class="copy-design" href="%s"><img src="/images/copy.png" /></a></td>', $design->name, $this->url(array('action'=>'copy', 'design_id'=>$design->design_id)));
+                    } else {
+                        echo '<td align="center"><img src="/images/copy.png" title="You must be logged in to clone a design" /></td>';
+                    }
+                    printf('<td align="center"><a href="%s"><img src="/images/other/design_icon.png" /></a></td>', $this->url(array('action'=>'index', 'design_id'=>$design->design_id)));
+                    if ($design->description != "") {
+                    	printf('<td><span class="ui-icon ui-icon-comment" title="%s"></span></td>', $design->description);
+                    } else {
+                    	printf('<td></td>');
+                    }		
+                    echo '</tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <table width="100%" style="padding-top: 20px;">
+        <tbody>
+            <tr>
+                <td width="20%" valign="middle" align="left"><b>Status Key:</b></td>
+                <td width="16%" valign="middle" align="center"><img alt="Sequence mismatch" src="/images/caution.png"><br>Out of date</td>
+                <td width="16%" valign="middle" align="center"><img alt="Under development" src="/images/under_development.png"><br>Unfinished</td>
+                <td width="16%" valign="middle" align="center"><img alt="Invalid design" src="/images/invalid_design.png"><br>Invalid</td>
+                <td width="16%" valign="middle" align="center"><img alt="Needs validation" src="/images/design_needs_validation.png"> <br>Needs validation</td>
+                <td width="16%" valign="middle" align="center"><img alt="Valid design" src="/images/valid_design.png"><br> Valid</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+
+$(document).ready(function() {
+
+    $('#btn_delete').click(function () {
+        if (confirm('Are you sure?  This will permanently remove these designs from the database.')) {
+            deleteDesigns();
+            $('#form-my-designs :checkbox').attr('checked', false);
+            disenableButtons();
+        }
+    });
+
+    $('.btn_export_fasta').click(function () {
+        var frm = $(this).closest(".table").children("form");
+        location.href = '/design/index/export?type=fasta&' + frm.serialize();
+        $(frm).find(':checkbox').attr('checked', false);
+        disenableButtons();
+    });
+
+    $('.btn_export_tab').click(function () {
+        var frm = $(this).closest(".table").children("form");
+        location.href = '/design/index/export?type=tab&' + frm.serialize();
+        $(frm).find(':checkbox').attr('checked', false);
+        disenableButtons();
+    });
+
+    rebindCheckboxClick()
+
+    $('a.copy-design').click(function (event) {
+        if (!confirm('Are you sure you want to clone (copy) design ' + $(this).attr("title") + '?')) {
+            event.preventDefault();
+        }
+    });
+
+});
+
+$('#btn_start_new').button();
+
+$("#my-designs").dataTable( {
+    "aLengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+    "bStateSave": true,
+    "iDisplayLength": 10, 
+    "bJQueryUI": true,
+    "bProcessing": false,
+    "bAutoWidth": false,
+    "sPaginationType": "full_numbers",
+    "oLanguage": {
+        "sSearch": "Filter records:",
+        "sZeroRecords": "No records to display",
+        "oPaginate" : { "sPrevious" : "Prev" }
+    },
+    "aoColumns": [
+               { "sTitle" : "<input type=\"checkbox\" class=\"check-all\" />", "sWidth" : "25px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "Name", "sWidth": "200px"},
+               { "sTitle" : "Grammar", "sWidth": "200px"},
+               { "sTitle" : "Library", "sWidth": "200px", "sClass" : "center" },
+               { "sTitle" : "Modified", "sWidth": "80px", "sClass" : "center" },
+               { "sTitle" : "Status", "sWidth": "40px", "bSortable": false},
+               { "sTitle" : "Clone", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "View", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "", "sWidth": "18px", "bSortable": false, "sClass" : "center" }
+            ],
+    "fnDrawCallback": rebindCheckboxClick 
+});
+
+
+$("#public-designs").dataTable( {
+    "aLengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+    "bStateSave": true,
+    "iDisplayLength": 10, 
+    "bJQueryUI": true,
+    "bProcessing": false,
+    "bAutoWidth": false,
+    "sPaginationType": "full_numbers",
+    "oLanguage": {
+        "sSearch": "Filter records:",
+        "sZeroRecords": "No records to display",
+        "oPaginate" : { "sPrevious" : "Prev" }
+    },
+    "aoColumns": [
+               { "sTitle" : "<input type=\"checkbox\" class=\"check-all\" />", "sWidth" : "25px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "Name", "sWidth": "200px"},
+               { "sTitle" : "Grammar", "sWidth": "200px"},
+               { "sTitle" : "Library", "sWidth": "200px", "sClass" : "center" },
+               { "sTitle" : "Modified", "sWidth": "80px", "sClass" : "center" },
+               { "sTitle" : "Status", "sWidth": "40px", "bSortable": false},
+               { "sTitle" : "Clone", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "View", "sWidth": "40px", "bSortable": false, "sClass" : "center" },
+               { "sTitle" : "", "sWidth": "18px", "bSortable": false, "sClass" : "center" }
+            ],
+    "fnDrawCallback": rebindCheckboxClick
+});
+$(".ui-icon-comment").tipTip({delay: 0});
+
+function rebindCheckboxClick() {
+    $('.check-all').removeAttr('checked');
+    disenableButtons();
+    $(':checkbox').unbind('click');
+    $(':checkbox').click(function () {
+        disenableButtons(this);
+    });
+
+    $('.check-all').unbind('click');
+    $('.check-all').click(function () {
+        checked_status = this.checked;
+        $(this).closest("form").find(":checkbox[name*='design_id']").each(function() {
+            this.checked = checked_status;
+        });
+        disenableButtons();
+    });
+
+}
+
+function disenableButtons(checkbox) {
+
+    if (!$(checkbox).hasClass('check-all')) {
+        if (!$(checkbox).checked) {
+            $(checkbox).closest("form").find(".check-all").attr('checked',false);
+        };
+    }
+
+    if ($("#form-public-designs input:checked").length == 0) {
+        $("#div-public-designs :button").button("disable");
+    } else {
+        $("#div-public-designs :button").button("enable");
+    }
+
+    if ($("#form-my-designs input:checked").length == 0) {
+        $("#div-my-designs :button").button("disable");
+    } else {
+        $("#div-my-designs :button").button("enable");
+    }
+
+}
+
+/**************************************************************************************
+ * Retrieves parts for the given category and selected library, if the parts
+ * have not already been retrieved from the database.
+ * 
+ * @param category
+ */
+function deleteDesigns() {
+     
+    var sUrl = "/api/design/delete?" + $('#form-my-designs').serialize();
+
+    $.ajax({
+        type: 'POST',
+        url: sUrl,
+        dataType: 'json',
+        success: function(data) {
+        /*
+           RJH: commented out because it doesn't work as expected when on any page
+           other than the first in the datatables jquery plug-in.
+            $(":checkbox[name*='design_id']:checked").each(function() {
+                $("#my-designs").dataTable().fnDeleteRow($('#my-designs tr#' + $(this).val()).index());
+            });
+        */
+            location.reload();    
+        },
+        async: false
+    });
+}
+
+/**
+ * Calls the revalidate action in the design controller of the api module.  The 
+ * action returns a JSON object that contains a message, which is shown in an alert.
+ *
+ * @param design_id
+ */
+function revalidateDesign(design_id) {
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/design/revalidate/id/' + design_id,
+        dataType: 'json',
+        success: function(data) {
+            alert(data.message);
+            location.reload();
+        }
+    });
+
+}
+
+</script>

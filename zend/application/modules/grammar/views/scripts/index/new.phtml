@@ -1,0 +1,46 @@
+<div id="page-content">
+    <div style="margin-bottom: 10px; border-bottom: 2px solid #C5DBEC; height: 40px;">
+        <h1 style="float: left; padding-right: 10px;">Create New Grammar</h1>
+        <div style="float: right">
+            <?php
+                if ($this->grammar_id == 0) {
+                    $url = "/parts";
+                    $label = "Parts Browser";
+                } else {
+                    $url = sprintf("/grammar/index/index/id/%s", $this->grammar_id);
+                    $label = "Grammar Editor";
+                }
+            
+                printf('<a href="%s" id="back" style="width: 200px">Back to %s</a>', $url, $label);
+            ?>
+        </div>
+    </div>
+    <div style="width: 100% border: 1px solid silver;">
+        <div style="float: left; width: 500px; border-right: 1px solid;">
+            <p>Create a new grammar by completing and submitting the following form:</p>
+            <div style="border-top: 0px solid #C5DBEC; padding: 5px;">
+                <?php echo $this->form; ?>
+            </div>
+        </div>
+        <div style="float: left; padding-left: 30px;">
+            <p>OR, if you have a GenoCAD grammar export file, you can import it here:</p>
+            <div style="border-top: 0px solid #C5DBEC; padding: 5px;">
+                <?php echo $this->form_import; ?>
+            </div>
+        </div>
+    </div>
+    <div id="image-browser" style="display: none"></div>
+</div>
+<script>
+    $("a#back").button();
+    
+    $("#image_set_browse")
+       .button()
+       .click(function(e) {
+            e.preventDefault();
+            loadImageBrowser("#image-browser", $("#form_grammar #icon_set").val());
+        });
+
+    disableFormSubmit();
+
+</script>

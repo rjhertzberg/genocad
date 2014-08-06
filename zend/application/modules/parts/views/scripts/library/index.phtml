@@ -1,0 +1,8 @@
+<ul>
+<?php
+foreach ($this->libs as $lib) {
+    var_dump($lib);
+    sprintf('<li><a href="edit/id/%s">%s</a></li>', $lib->library_id, $lib->name);
+} 
+?>
+</ul>

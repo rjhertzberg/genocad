@@ -1,0 +1,8 @@
+<h1>Design Templates</h1>
+<p>These are public designs that you can use as starting points to create designs for your own design collection.</p>
+<?php
+
+foreach ($this->designs as $design) {
+    printf('<p><strong>%s</strong><br/>%s<br/>[<a href="%s">Load this design</a>]</p>', $design->name, $design->description, $this->url(array('module'=>'design', 'controller'=>'index','preload'=>$design->design_id), null, true));
+}
+?>

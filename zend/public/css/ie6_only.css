@@ -1,0 +1,62 @@
+@charset "UTF-8";
+/* CSS Document */
+
+img
+{
+	behavior: url(/css/iepngfix.htc);
+}
+
+p#logo img
+{
+	width: 239px;
+  	height: 42px;
+}
+
+#fr-left-corner, #fr-right-corner
+{
+    width: 40px;
+	height: 540px;
+}
+
+
+body.flex div#well, body.flex div#well2,
+{
+	background-image: none;
+	height: 640px;
+}
+
+body.flex div#header
+{
+	height: 123px;
+}
+
+body.flex div#well
+{ 
+	/* behavior: url(/css/pngbehavior.htc); */
+	background: transparent url(/images/frame-left-corner-notrans.gif) left -26px no-repeat;
+}
+
+body.flex div#well2
+{
+	background: transparent url(/images/frame-right-corner-notrans.gif) right -26px no-repeat;
+}
+
+body.flex #frame-background
+{
+	behavior: url(/css/iepngfix.htc);
+	background: transparent url(../images/frame-center.png) top right no-repeat;
+}
+
+div#historycontainer
+{
+   display: inline;
+}
+
+ul.inline {
+	zoom: 1; /* "zoom" triggers IE's "hasLayout" property, resolving spacing issues. */
+}
+
+div#well
+{
+	zoom: 1;
+}

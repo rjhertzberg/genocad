@@ -1,0 +1,38 @@
+alter table designs
+add sequence text;
+
+alter table rules
+modify change_to varchar(120);
+
+alter table categories
+add icon_name varchar(255);
+
+update categories
+set icon_name = concat('icon_', lower(letter));
+
+alter table categories
+add display varchar(25);
+
+update categories
+set display = letter;
+
+create or replace view v_parts_browser 
+as
+select p.id AS id,
+p.part_id AS part_id,
+p.description AS part_name,
+p.segment AS part_segment,
+p.user_id AS part_user_id,
+p.description_text AS part_description_text,
+date_format(p.date_created,_utf8'%m/%d/%Y') AS part_date_created,
+date_format(p.last_modified,_utf8'%m/%d/%Y') AS part_last_modified,
+c.letter AS `category_letter`,
+c.description AS category_description,
+c.category_id AS category_id,
+c.grammar_id AS grammar_id,
+c.icon_name as icon_name,
+c.display as category_display  
+from ((parts p 
+join categories_parts cp) 
+join categories c) 
+where ((p.id = cp.part_id) and (cp.category_id = c.category_id));

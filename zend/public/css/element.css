@@ -1,0 +1,364 @@
+@charset "UTF-8";
+
+#controlframe
+{
+  border-width: 1px 0;
+  margin: 0 11px 0 14px;
+  overflow: hidden;
+  background: #fff;
+  min-height: 540px;
+  height: auto !important;
+  height: 540px;
+}
+
+#historycontainer
+{
+   float: left;
+   width: 75px;
+   padding: 0;
+   margin: 10px 0 5px 5px;
+}
+
+#sequencecontainer
+{
+   padding: 0; margin: 0;
+   margin: 10px 0px 20px 115px;
+}
+
+#controlframe h2, #design-title
+{
+   color: #0d5270;
+   font: bold 18px verdana, arial, helvetica, sans-serif;
+}
+
+#historyheader h2
+{
+   font-size: 14px;
+}
+
+#historyheader, #sequenceheader
+{
+   border-bottom: 3px #b1d9e9 solid;
+   height: 35px;
+}
+
+#sequenceheader
+{
+
+}
+
+#sequenceheader h2
+{
+  float: left;
+}
+
+#status
+{
+   float: left;
+   padding-left: 20px;
+}
+
+#sequenceframe
+{
+	padding-top: 20px;
+	overflow: auto;
+	background-color: #fff;
+	1min-height: 540px;
+	1height: auto !important;
+	height: 500px;
+	border-left: 1px #b1d9e9 solid;
+	margin-left: -20px;
+	padding-left: 20px;     
+}
+
+div.element
+{
+   float: left;
+   overflow: hidden;
+   background-color: #fff;
+   margin: 0 1px 0 0;
+   width: 56px;
+}
+
+div.element h3
+{
+   font: bold 14px Arial, Helvetica, sans-serif;
+   text-align: center;
+   margin: 4px 0;
+}
+
+div.element h4
+{
+   font: bold 10px arial, helvetica, sans-serif;
+   color: #0d5270;
+   padding: 4px;
+   display: none;
+}
+
+div.element ul
+{
+   overflow: hidden;
+   zoom: 1;
+}
+
+div.element ul, div.element ul li
+{
+   margin: 0; padding: 0; list-style: none;
+   white-space: nowrap;
+}
+
+div.element li
+{
+   color: #797979;
+   font: 12px arial, helvetica, sans-serif;
+   zoom: 1;
+   list-style: none;
+   
+}
+
+div.element li a
+{
+   display: block;
+   padding: 4px 5px 5px 17px;
+   color: #797979;
+   background: transparent url(../images/li-inactive.gif) 4px 6px no-repeat;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+div.element li a:hover
+{
+   display: block;
+   padding: 4px 5px 5px 17px;
+   background: #b1d9e9 url(../images/li-active.gif) 4px 6px no-repeat;
+   color: #185b78;
+}
+
+
+
+div.subs{
+	background:#EEEEEE;
+}
+div.subs,
+div.terminals,
+div.code
+{
+   border: 1px #ddd solid;
+   margin: 2px 0; 
+   overflow: hidden;
+   white-space: nowrap;
+}
+
+div.code
+{
+   cursor: pointer;
+}
+
+div.code:hover, li.show_more
+{
+   background: #b1d9e9 url(../images/li-active.gif) 4px 6px no-repeat;
+}
+
+div.detail
+{
+   text-align: center;
+}
+
+div.detail img
+{
+  /* border: 1px #ddd solid; */
+  /* padding: 21px; */
+  background-color: #fff;
+  margin: 0px;
+}
+
+div.code
+{
+   background: #fff url(../images/li-check.gif) 4px 6px no-repeat;
+   font: bold 12px arial, helvetica, sans-serif;
+   padding: 4px 5px 5px 17px;
+   color: #185b78;
+}
+
+/********* History styles **************/
+
+#historywrapper
+{
+   overflow: auto;
+   padding: 1em 0;
+  min-height: 527px;
+  height: auto !important;
+  height: 527px;      
+}
+
+#historycontainer ul, ul li
+{
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+#history
+{
+   padding: 10px 0;
+}
+
+
+#historycontainer ul.history-list-item
+{
+   overflow: auto;
+   padding-left: 0em;
+   cursor: pointer;
+}
+
+#historycontainer ul.history-list-item li
+{
+   float: left;
+   width: 4.5em;
+   color: #00273a;
+   background-color: #b1d9e9;
+   margin: 1px;
+   text-align: center;
+   padding: 2px 2px 1px 2px;
+   font: bold 9px verdana, arial, helvetica, sans-serif;
+}
+
+#historycontainer ul.history-list-item:hover li,
+#historycontainer ul.current li
+{
+   background-color: #0d5270;
+   color: #fff;
+}
+
+
+/* validate page overrides */
+
+body.validate #historycontainer
+{
+	width: 236px; 
+}
+
+body.validate #historywrapper p
+{
+	font: 12px/1.5 Arial, Helvetica, sans-serif;
+	margin: 0 6px 18px 0;
+}
+
+body.validate #controlframe
+{
+	background: #fff url(../images/background-dropshadow.gif) 224px 10px repeat-y;
+}
+
+body.validate #historyheader
+{
+	border-width: 0;
+	height: auto;
+}
+
+body.validate #sequencecontainer
+{
+   min-height: 0;
+   height: auto;
+}
+
+body.validate #sequenceframe
+{
+   min-height: 0;
+   height: auto;
+   margin-left: 10px;
+}
+
+body.validate textarea
+{
+   width: 99%;
+   border: 2px #999 inset;
+}
+
+
+body.validate #validate-button
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+   margin-right: 2px;
+   float: right;
+}
+
+div.validate div#resultsdiv
+{
+   height: auto;
+}
+
+body.validate div#statuscontent
+{
+   padding-left: 0px;
+   margin-left: 10px;
+   font: 16px/1.5 verdana, arial, helvetica, sans-serif;
+   text-transform: uppercase;
+   letter-spacing: .6em;
+   overflow: auto;
+}
+
+body.validate p.validated-item img
+{
+   vertical-align: text-bottom;
+   margin-right: .6em;
+}
+
+body.validate p.validated-item
+{
+   margin: 10px 0;
+   white-space: nowrap;
+}
+
+body.validate #resultsdiv
+{
+   margin: 0em 0;
+   padding: 1em;
+}
+
+body.validate #status
+{
+   float: none;
+   overflow: hidden;
+   margin: 10px;
+   border-bottom: 5px #000 solid;
+}
+
+body.validate #statusmsg
+{
+   margin-right: 400px;
+   float: left;
+}
+
+body.validate #statuscontrol
+{
+   float: right;
+   margin-bottom: 5px;
+}
+
+body.validate #statusmsg img
+{
+	margin-top: 12px;
+}
+
+body.validate #status.good
+{
+   border-color: #c8dead;
+}
+
+body.validate #status.bad
+{
+	border-color: #efadad;
+}
+
+/* added by RJH for zend form errors */
+
+table.user-form ul.errors li {
+    font-size: .9em;
+    color: red;
+    clear: left;
+    position: relative;
+    top: -10px;
+    left: -30px;
+    list-style: bullet;
+}

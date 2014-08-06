@@ -1,0 +1,12 @@
+<?php 
+$errors = $this->form->getErrorMessages();
+if (!isset($errors)) {
+    echo "<ul>";
+    foreach ($errors as $error) {
+        echo '<li>' . $error . '</li>';
+    }
+    echo "</ul>";
+}
+
+echo $this->form ;
+?>

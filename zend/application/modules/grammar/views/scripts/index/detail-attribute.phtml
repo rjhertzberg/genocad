@@ -1,0 +1,72 @@
+<style>
+td.input {
+    width: 500px;
+    color: #000000;
+    background-color: #FAFAEF;
+    font-weight: normal;
+    border: 1px solid #EAEAEA;
+}
+td label {
+    width: 100px;
+    color: #000000;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: .9em;
+}
+</style>
+<div id="grammar-tabs">
+    <ul>
+        <li><a href="#tabs-1">Grammar Detail</a></li>
+        <li><a href="#tabs-2">Attribute Code</a></li>
+    </ul>
+    <div id="tabs-1">
+    <?php 
+        echo $this->form;
+    ?>
+    </div>
+    <div id="tabs-2">
+    	<form id="grammar-attributes">
+        <p>Click name of the code section you wish to edit.</p>
+        <div id="ctbg-accordion">
+        	<?php foreach ($this->attributeGrammar as $attributeGrammar) {
+        		// code_init
+        		printf('<h3><a href="#">%s</a></h3><div><table cellpadding="3" cellspacing="2">', "Attribute Code Init");
+        		$values = $attributeGrammar->getFormItem("code_init");
+        		printf('<tr>%s</tr>', $values);
+        		echo '</table></div>';
+        		
+        		// code_end
+        		printf('<h3><a href="#">%s</a></h3><div><table cellpadding="3" cellspacing="2">', "Attribute Code End");
+        		$values = $attributeGrammar->getFormItem("code_end");
+        		printf('<tr>%s</tr>', $values);
+        		echo '</table></div>';
+        	} 
+        	
+        	foreach($this->codeTbgenerated as $code) {
+        		// type
+        		printf('<h3 id="h3_'.$code->id.'"><a href="#">%s</a></h3><div id="ctbg_'.$code->id.'"><table cellpadding="3" cellspacing="2">', "Code to be Generated: ".$code->type);
+        		$values = $code->getFormItem("type");
+        		$removeButton = new Zend_Form_Element_Button("removeButton_".$code->id);
+        		$removeButton->setLabel('Delete');
+        		$removeButton->setAttrib('onClick', 'removeCodeTbgenerated('.$code->id.');');
+        		printf('<tr>%s</tr>', $values);
+        		$values = $code->getFormItem("code");
+        		printf('<tr>%s</tr>', $values);
+        		printf('<tr>%s</tr>', $removeButton);
+        		echo '</table></div>';
+        	}
+        	
+        	
+        	?>
+        </div>
+        <p>
+        <?php 
+        	$addButton = new Zend_Form_Element_Button("addButton");
+        	$addButton->setLabel('Add Code')
+        			  ->setAttrib('onclick', 'addCodeTbgenerated('.$this->grammar_id.');');
+        	printf('%s', $addButton);
+        ?>
+        </p>
+        </form>
+    </div>
+</div>
