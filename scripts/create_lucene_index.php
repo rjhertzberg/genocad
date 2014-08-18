@@ -1,19 +1,20 @@
 <?php
 // This script handles the creation and population of the Zend/Lucene Index
 // for the GenoCAD Parts database
-set_include_path('C:\wamp\www\genocad\zend\library\/');
 
-include_once "Zend\Search\Lucene\Analysis\Analyzer.php";
-include_once "Zend\Search\Lucene\Analysis\Analyzer\Common\TextNum.php";
-include_once "Zend\Search\Lucene.php";
-include_once "Zend\Search\Lucene\Document.php";
-include_once "Zend\Search\Lucene\Field.php";
+set_include_path('/var/www/genocad/zend/library/');
 
-$indexPath = "C:\wamp\www\genocad\lucene";
+include_once "Zend/Search/Lucene/Analysis/Analyzer.php";
+include_once "Zend/Search/Lucene/Analysis/Analyzer/Common/TextNum.php";
+include_once "Zend/Search/Lucene.php";
+include_once "Zend/Search/Lucene/Document.php";
+include_once "Zend/Search/Lucene/Field.php";
+
+$indexPath = "/opt/lucene/data/";
 $server = "localhost";
-$username="genocad";
-$password="Test";
-$database="genocad_deploy";
+$username="genofab";
+$password="2aC4uRv4aL1hYn4poz7er2ghakS4Og2I2";
+$database="genofab";
 
 Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum_CaseInsensitive());
 $index = Zend_Search_Lucene::create($indexPath);

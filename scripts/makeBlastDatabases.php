@@ -1,11 +1,11 @@
 <?php
-$indexPath = "C:\wamp\www\genocad_grammar";
-$blastExec ='"C:\Program Files\NCBI\blast-2.2.28+\bin\makeblastdb"';
-$blastIndex = '/wamp/www/genocad_grammar/blast/';
+$indexPath = "/opt/blast/";
+$blastExec ='"/opt/ncbi-blast-2.2.29+/bin/makeblastdb"';
+$blastIndex = '/opt/blast/data/';
 $server = "localhost";
-$username="genocad";
-$password="Test";
-$database="genocad_prod2";
+$username="genofab";
+$password="2aC4uRv4aL1hYn4poz7er2ghakS4Og2I2";
+$database="genofab";
 
 $db = connectToDB($server, $username, $password, $database);
 
