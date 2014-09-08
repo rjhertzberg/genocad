@@ -3320,6 +3320,7 @@ CREATE TABLE `users` (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('0', 'genocad', 'dcf0464549675363212c879af96d2f2d', 'user', 'Genocad', 'Genocad', '', '', '', '', '', '', '', '', '', '2013-08-06 15:03:08', '1', '', '');
+INSERT INTO `users` VALUES ('0', 'admin', 'dcf0464549675363212c879af96d2f2d', 'admin', 'Genocad', 'Genocad', '', '', '', '', '', '', '', '', '', '2013-08-06 15:03:08', '1', '', '');
 
 -- ----------------------------
 -- Table structure for `user_searches`
