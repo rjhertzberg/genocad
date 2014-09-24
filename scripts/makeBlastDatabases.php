@@ -3,7 +3,7 @@ $indexPath = "/opt/blast/";
 $blastExec ='"/opt/ncbi-blast-2.2.29+/bin/makeblastdb"';
 $blastIndex = '/opt/blast/data/';
 $server = "localhost";
-$username="genofab";
+$username="genocad";
 $password="2aC4uRv4aL1hYn4poz7er2ghakS4Og2I2";
 $database="genocad";
 
