@@ -12,7 +12,7 @@ include_once "Zend/Search/Lucene/Field.php";
 
 $indexPath = "/opt/lucene/data/";
 $server = "localhost";
-$username="genofab";
+$username="genocad";
 $password="2aC4uRv4aL1hYn4poz7er2ghakS4Og2I2";
 $database="genocad";
 
