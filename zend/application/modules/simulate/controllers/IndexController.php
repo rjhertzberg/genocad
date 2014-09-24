@@ -85,7 +85,12 @@ class Simulate_IndexController extends Zend_Controller_Action
 
             
                 if ($lineKey == 0 && $seriesKey > 0) {
-                    $series[]["label"] = substr($col, 0, strpos($col, '['));
+                    if (substr_count($col, '[')) {
+                        $separator = '[';
+                    } else if (substr_count($col, '.')) {
+                        $separator = '.';
+                    }
+                    $series[]["label"] = substr($col, 0, strpos($col, $separator));
                 }
                  
                 if ($lineKey > 0  && $seriesKey > 0) {
